@@ -1,0 +1,8 @@
+{
+    "pack_name": "Blaze Datapack",
+    "namespace": "blaze",
+    "description": "Adds Blaze the Cat in Minecraft",
+    "minecraft_version": "1.21.11",
+
+    "load_msg": "Blaze Datapack Loaded!"
+}

@@ -1,0 +1,22 @@
+{
+    "name": "Blaze The Cat",
+    "description": "A fiery feline friend",
+    "headTexture": null,
+    
+    "color_scheme": ["purple","red","gold"],
+    "crafting_recipe": {
+        "minecraft:blaze_rod": 32,
+        "minecraft:ender_eye": 2,
+        "minecraft:gunpowder": 64,
+        "minecraft:potion": {
+            "potion_contents": "fire_resistance",
+            "count": 1
+        },
+        "minecraft:fire_charge":32,
+        "minecraft:kelp": 32,
+        "minecraft:cooked_cod": 10,
+        "minecraft:cooked_salmon": 10,
+        "minecraft:tropical_fish": 10,
+        "minecraft:pufferfish": 1
+    }     
+}

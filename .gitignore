@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*__init__.py
+.Python/
+venv/
+.env
+
+# Editor-specific files
+.vscode/
+.idea/
+
+# Datapack output (assuming DATAPACKS_PATH is outside the repo, but just in case)
+*.zip
+
+# Operating System files
+.DS_Store
+thumbs.db
