@@ -1,6 +1,5 @@
 import os
 import sys
-import os
 from dotenv import load_dotenv
 
 # Add the project root to sys.path to enable correct module imports
@@ -10,22 +9,22 @@ import shutil
 from collections import deque
 
 # Initialization Pipeline Imports
-from initialization.pack_meta_writer import writePackMeta
-from initialization.function_tags_writer import writeFunctionTags
-from initialization.predicate_files_initializer import initializePredicateFiles
-from initialization.reload_file_writer import writeReloadFile
-from initialization.main_file_writer import writeMainFile
-from initialization.main_halfsec_file_writer import writeMainHalfSecFile
-from initialization.main_sec_file_writer import writeMainSecFile
-from initialization.craft_file_writer import writeCraftFile
+from initialization.writers.pack_meta_writer import writePackMeta
+from initialization.writers.function_tags_writer import writeFunctionTags
+from initialization.writers.predicate_files_initializer import initializePredicateFiles
+from initialization.writers.reload_file_writer import writeReloadFile
+from initialization.writers.main_file_writer import writeMainFile
+from initialization.writers.main_halfsec_file_writer import writeMainHalfSecFile
+from initialization.writers.main_sec_file_writer import writeMainSecFile
+from initialization.writers.craft_file_writer import writeCraftFile
 
 # Character Pipeline Imports
-from character.item_detect_predicate_creator import createItemDetectPredicate
-from character.activation_function_writer import writeActivationFunction
-from character.deactivation_function_writer import writeDeactivationFunction
-from character.tick_function_writer import writeTickFunction
-from character.effect_function_writer import writeEffectFunction
-from character.quick_effect_function_writer import writeQuickEffectFunction
+from character.writers.item_detect_predicate_creator import createItemDetectPredicate
+from character.writers.activation_function_writer import writeActivationFunction
+from character.writers.deactivation_function_writer import writeDeactivationFunction
+from character.writers.tick_function_writer import writeTickFunction
+from character.writers.effect_function_writer import writeEffectFunction
+from character.writers.quick_effect_function_writer import writeQuickEffectFunction
 
 load_dotenv()
 datapackParams = json.loads(open('parameters/datapack_parameters.json').read())

@@ -1,5 +1,5 @@
 import os
-from .builders.craft_builder import craft_file_content
+from ..craft_builder import craft_file_content
 from constants import charNamespace
 
 def writeCraftFile(datapackParams):

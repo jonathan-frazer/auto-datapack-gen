@@ -1,5 +1,5 @@
 import os
-from .builders.deactivate_builder import deactivate_file_content
+from ..deactivate_builder import deactivate_file_content
 from constants import charNamespace
 
 def writeDeactivationFunction(datapackParams):

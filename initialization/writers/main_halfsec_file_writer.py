@@ -1,5 +1,5 @@
 import os
-from .builders.main_halfsec_builder import main_halfsec_file_content
+from ..main_halfsec_builder import main_halfsec_file_content
 
 def writeMainHalfSecFile(datapackParams):
     mainhalfsec_file_path = os.path.join(os.getenv('DATAPACKS_PATH'), datapackParams['pack_name'], 'data', datapackParams['namespace'], 'function', 'main_halfsec.mcfunction')

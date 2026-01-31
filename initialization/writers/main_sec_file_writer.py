@@ -1,5 +1,5 @@
 import os
-from .builders.main_sec_builder import main_sec_file_content
+from ..main_sec_builder import main_sec_file_content
 
 def writeMainSecFile(datapackParams):
     mainsec_file_path = os.path.join(os.getenv('DATAPACKS_PATH'), datapackParams['pack_name'], 'data', datapackParams['namespace'], 'function', 'main_sec.mcfunction')

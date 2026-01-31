@@ -1,5 +1,5 @@
 import os
-from .builders.activate_builder import activate_file_content
+from ..activate_builder import activate_file_content
 from constants import charNamespace
 
 def writeActivationFunction(datapackParams):

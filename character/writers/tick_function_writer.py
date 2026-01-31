@@ -1,5 +1,5 @@
 import os
-from .builders.tick_builder import tick_file_content
+from ..tick_builder import tick_file_content
 from constants import charNamespace
 
 def writeTickFunction(datapackParams):

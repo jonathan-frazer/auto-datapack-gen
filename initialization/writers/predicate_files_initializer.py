@@ -1,5 +1,6 @@
 import os
 import json
+from ..basic_predicates_builder import get_basic_predicate_content
 
 def initializePredicateFiles(datapackParams):
     predicate_file_path = os.path.join(os.getenv('DATAPACKS_PATH'), datapackParams['pack_name'], 'data', datapackParams['namespace'], 'predicate')
@@ -9,13 +10,4 @@ def initializePredicateFiles(datapackParams):
     #Initialize basic predicate files
     for filename in ['is_sneaking.json','is_sprinting.json','is_on_ground.json']:
         with open(os.path.join(predicate_file_path, filename), 'w') as f:
-            f.write(json.dumps({
-                "condition": "minecraft:entity_properties",
-                "entity": "this",
-                "predicate": {
-                    "type": "minecraft:player",
-                    "flags": {
-                        filename.split('.')[0]: True
-                    }
-                }
-            }, indent=4))
+            f.write(get_basic_predicate_content(filename.split('.')[0]))

@@ -1,5 +1,5 @@
 import os
-from .builders.effect_builder import effect_file_content
+from ..effect_builder import effect_file_content
 from constants import charNamespace
 
 def writeEffectFunction(datapackParams):

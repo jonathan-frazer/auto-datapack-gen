@@ -1,5 +1,5 @@
 import os
-from .builders.main_builder import main_file_content
+from ..main_builder import main_file_content
 
 def writeMainFile(datapackParams):
     main_file_path = os.path.join(os.getenv('DATAPACKS_PATH'), datapackParams['pack_name'], 'data', datapackParams['namespace'], 'function', 'main.mcfunction')

@@ -1,5 +1,5 @@
 import os
-from .builders.quick_effect_builder import quickEffect_file_content
+from ..quick_effect_builder import quickEffect_file_content
 from constants import charNamespace
 
 def writeQuickEffectFunction(datapackParams):
