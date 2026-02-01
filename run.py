@@ -12,9 +12,11 @@ from collections import deque
 from initialization.writers.pack_meta_writer import writePackMeta
 from initialization.writers.function_tags_writer import writeFunctionTags
 from initialization.writers.predicate_files_initializer import initializePredicateFiles
+from initialization.writers.advancement_files_initializer import initializeAdvancementFiles
 from initialization.writers.reload_file_writer import writeReloadFile
 from initialization.writers.main_function_writers import writeMainFile, writeMainHalfSecFile, writeMainSecFile
 from initialization.writers.craft_file_writer import writeCraftFile
+
 
 # Character Pipeline Imports
 from character.writers.item_detect_predicate_creator import createItemDetectPredicate
@@ -40,6 +42,7 @@ if __name__ == "__main__":
 		writePackMeta,
 		writeFunctionTags,
 		initializePredicateFiles,
+		initializeAdvancementFiles,
         writeReloadFile,
 		writeMainFile,
 		writeCraftFile,

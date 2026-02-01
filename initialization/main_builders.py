@@ -41,6 +41,7 @@ def main_halfsec_file_content(datapackParams):
         "\n# Effects",
         f"execute as @a[tag={charNameTag}] run function {datapackParams['namespace']}:{charNamespace}/quick_effect"
     ]
+    lines.append(f"\nkill @e[type=item,nbt={{Item:{{components:{{\"minecraft:custom_data\":{ITEM_CUSTOM_DATA_COMPONENT}}}}}}}]")
     lines.append(f"\nschedule function {datapackParams['namespace']}:main_halfsec 10t")
 
     return "\n".join(lines)
@@ -50,6 +51,5 @@ def main_sec_file_content(datapackParams):
         "# Runs Every Second",
         f"execute as @a[tag={charNameTag}] run function {datapackParams['namespace']}:{charNamespace}/effect"
     ]
-    lines.append(f"\nkill @e[type=item,nbt={{Item:{{components:{{\"minecraft:custom_data\":{ITEM_CUSTOM_DATA_COMPONENT}}}}}}}]")
     lines.append(f"\nschedule function {datapackParams['namespace']}:main_sec 1s")
     return "\n".join(lines)

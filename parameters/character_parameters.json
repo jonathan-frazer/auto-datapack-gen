@@ -7,6 +7,24 @@
     "color_scheme": ["purple","hot_pink","orange"],
 
     "effects": ["speed","strength",{"name":"jump_boost","amplifier":2}],
+    "attacks": [
+        {
+            "name": "Blazing Fury",
+            "description": "Ignites Enemies"
+        },
+        {
+            "name": "Fire Dash",
+            "description": "Quickly dashes forward leaving a trail of fire"
+        },
+        {
+            "name": "Inferno Shield",
+            "description": "Surrounds self with a barrier of flames, burning attackers"
+        },
+        {
+            "name": "Ember Flare",
+            "description": "Launches fiery projectiles that explode on impact"
+        }
+    ],
 
     "crafting_recipe": {
         "minecraft:blaze_rod": 32,
