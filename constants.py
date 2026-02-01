@@ -16,7 +16,8 @@ ITEM_LORE_COMPONENT = (
                     f'{{"color":"{colorCodeHexGen(characterParams.get("color_scheme")[1])}","text":"{characterParams.get("description", "")}"}}'
                 f']'
             )
-ITEM_CUSTOM_DATA_COMPONENT = f'{{{charNameTag}:2}}'
+HEAD_CUSTOM_DATA_COMPONENT = f'{{{charNameTag}:2}}'
+ITEM_CUSTOM_DATA_COMPONENT = f'{{{charNameTag}:1}}'
 ITEM_PROFILE_COMPONENT = (
     f'{{'
         f'"properties":['
@@ -27,3 +28,4 @@ ITEM_PROFILE_COMPONENT = (
         f']'
     f'}}'
 )
+HIDDEN_COMPONENT = '{hidden_components:["dyed_color","attribute_modifiers","unbreakable"]}'

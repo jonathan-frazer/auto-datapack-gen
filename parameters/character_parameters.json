@@ -1,9 +1,13 @@
 {
     "name": "Blaze The Cat",
     "description": "A fiery feline friend",
-    "headTexture": null,
     
-    "color_scheme": ["purple","red","gold"],
+    "headTexture": "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjJjODM0MWRmMGI4MmQzNzYxMjBjZjMyMzMyYTI0MjNmMzBhZmRlYTU5Njg5ZjA4Y2U2ODI4OGJiMWRhOGZkZCJ9fX0=",
+    "armor": ["leather","iron","leather"],
+    "color_scheme": ["purple","hot_pink","orange"],
+
+    "effects": ["speed","strength",{"name":"jump_boost","amplifier":2}],
+
     "crafting_recipe": {
         "minecraft:blaze_rod": 32,
         "minecraft:ender_eye": 2,

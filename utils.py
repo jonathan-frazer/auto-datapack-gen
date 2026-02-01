@@ -1,12 +1,22 @@
+def _normalize_color_name(color: str) -> str:
+    return color.lower().replace(" ", "_")
+
+
 def colorCodeHexGen(color):
+    if isinstance(color, str):
+        color = color.strip()
+        # Already a hex code
+        if color.startswith("#") and len(color) in (4, 7):
+            return color.upper()
+
     color_codes = {
+        # Minecraft base colors
         "black": "#000000",
         "dark_blue": "#0000AA",
         "dark_green": "#00AA00",
         "dark_aqua": "#00AAAA",
         "dark_red": "#AA0000",
         "dark_purple": "#AA00AA",
-        "purple": "#C12FFF",
         "gold": "#FFAA00",
         "gray": "#AAAAAA",
         "dark_gray": "#555555",
@@ -16,21 +26,51 @@ def colorCodeHexGen(color):
         "red": "#FF5555",
         "light_purple": "#FF55FF",
         "yellow": "#FFFF55",
-        "white": "#FFFFFF"
+        "white": "#FFFFFF",
+        "purple": "#C12FFF",
+        "pink": "#FF77FF",
+        "magenta": "#FF00FF",
+        "orange": "#FFA500",
+        "brown": "#8B4513",
+        "cyan": "#00FFFF",
+        "lime": "#32CD32",
+        "navy": "#000080",
+        "teal": "#008080",
+        "olive": "#808000",
+        "maroon": "#800000",
+        "silver": "#C0C0C0",
+        "indigo": "#4B0082",
+        "violet": "#EE82EE",
+        "hot_pink": "#FF00D9",
+        "beige": "#F5F5DC",
+        "coral": "#FF7F50",
+        "salmon": "#FA8072",
+        "turquoise": "#40E0D0"
     }
-    return color_codes.get(color.lower(), color)
+
+    key = _normalize_color_name(str(color))
+    return color_codes.get(key, "#FFFFFF")  # safe fallback
+
 
 def colorCodeIntGen(color):
+    if isinstance(color, int):
+        return color
+
+    if isinstance(color, str):
+        color = color.strip()
+        # Hex string → int
+        if color.startswith("#"):
+            return int(color[1:], 16)
+
     color_codes = {
-        "black": 0,
-        "dark_blue": 0xAA00,
-        "dark_green": 0xFF00,
-        "dark_aqua": 0xFFFF,
-        "dark_red": 0xFF0000,
-        "dark_purple": 0xFF00FF,
-        "purple": 0xC12FFF,
-        "gold": 0xFFFF00,
-        "gray": 0xFFFFFF,
+        "black": 0x000000,
+        "dark_blue": 0x0000AA,
+        "dark_green": 0x00AA00,
+        "dark_aqua": 0x00AAAA,
+        "dark_red": 0xAA0000,
+        "dark_purple": 0xAA00AA,
+        "gold": 0xFFAA00,
+        "gray": 0xAAAAAA,
         "dark_gray": 0x555555,
         "blue": 0x5555FF,
         "green": 0x55FF55,
@@ -38,9 +78,30 @@ def colorCodeIntGen(color):
         "red": 0xFF5555,
         "light_purple": 0xFF55FF,
         "yellow": 0xFFFF55,
-        "white": 0xFFFFFF
+        "white": 0xFFFFFF,
+        "purple": 0xC12FFF,
+        "pink": 0xFF77FF,
+        "magenta": 0xFF00FF,
+        "orange": 0xFFA500,
+        "brown": 0x8B4513,
+        "cyan": 0x00FFFF,
+        "lime": 0x32CD32,
+        "navy": 0x000080,
+        "teal": 0x008080,
+        "olive": 0x808000,
+        "maroon": 0x800000,
+        "silver": 0xC0C0C0,
+        "indigo": 0x4B0082,
+        "violet": 0xEE82EE,
+        "beige": 0xF5F5DC,
+        "hot_pink": 0xFF00D9,
+        "coral": 0xFF7F50,
+        "salmon": 0xFA8072,
+        "turquoise": 0x40E0D0
     }
-    return color_codes.get(color.lower(), color)
+
+    key = _normalize_color_name(str(color))
+    return color_codes.get(key, 0xFFFFFF)  # safe fallback
 
 def darkenHexColor(color, amount):
     if not color.startswith('#'):
