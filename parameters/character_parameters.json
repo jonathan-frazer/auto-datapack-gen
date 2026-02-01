@@ -7,22 +7,26 @@
     "color_scheme": ["purple","hot_pink","orange"],
 
     "effects": ["speed","strength",{"name":"jump_boost","amplifier":2}],
-    "attacks": [
+    "ability_slots": [
         {
             "name": "Blazing Fury",
-            "description": "Ignites Enemies"
+            "description": "Ignites Enemies",
+            "action_slots": ["r-click","shift-click","f-press","shift-f-press","q-press","shift-q-press"]
         },
         {
             "name": "Fire Dash",
-            "description": "Quickly dashes forward leaving a trail of fire"
+            "description": "Quickly dashes forward leaving a trail of fire",
+            "action_slots": ["r-click","f-press"]
         },
         {
             "name": "Inferno Shield",
-            "description": "Surrounds self with a barrier of flames, burning attackers"
+            "description": "Surrounds self with a barrier of flames, burning attackers",
+            "action_slots": ["r-click","f-press","shift-f-press"]
         },
         {
             "name": "Ember Flare",
-            "description": "Launches fiery projectiles that explode on impact"
+            "description": "Launches fiery projectiles that explode on impact",
+            "action_slots": ["r-click","q-press"]
         }
     ],
 

@@ -7,5 +7,3 @@ def initializeAdvancementFiles(datapackParams):
     )
 
     os.makedirs(os.path.dirname(advancement_file_path), exist_ok=True)
-    with open(advancement_file_path, 'w') as f:
-        f.write("{}")

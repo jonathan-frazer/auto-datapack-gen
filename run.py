@@ -22,6 +22,7 @@ from initialization.writers.craft_file_writer import writeCraftFile
 from character.writers.item_detect_predicate_creator import createItemDetectPredicate
 from character.writers.activation_deactivation_function_writer import writeActivationFunction, writeDeactivationFunction
 from character.writers.effect_function_writers import writeTickFunction, writeEffectFunction, writeQuickEffectFunction
+from character.writers.ability_slot_writer import createAbilityFiles,createAdvancementFiles
 
 load_dotenv()
 datapackParams = json.loads(open('parameters/datapack_parameters.json').read())
@@ -50,7 +51,9 @@ if __name__ == "__main__":
 		writeMainHalfSecFile
 	])
 	characterPipeline = deque([
+		createAdvancementFiles,
 		createItemDetectPredicate,
+		createAbilityFiles,
 		writeActivationFunction,
 		writeDeactivationFunction,
 		writeTickFunction,

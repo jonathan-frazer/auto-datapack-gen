@@ -29,3 +29,6 @@ ITEM_PROFILE_COMPONENT = (
     f'}}'
 )
 HIDDEN_COMPONENT = '{hidden_components:["dyed_color","attribute_modifiers","unbreakable"]}'
+
+RCLICK_SCOREBOARD_NAME = nameShortener(characterParams['name'],max_length=8,type='namespace')+"RClick"
+QPRESS_SCOREBOARD_NAME = nameShortener(characterParams['name'],max_length=8,type='namespace')+"QPress"

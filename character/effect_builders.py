@@ -1,4 +1,4 @@
-from constants import characterParams, ITEM_CUSTOM_DATA_COMPONENT,HIDDEN_COMPONENT,charNameTag
+from constants import QPRESS_SCOREBOARD_NAME, RCLICK_SCOREBOARD_NAME, charNamespace, characterParams, ITEM_CUSTOM_DATA_COMPONENT,HIDDEN_COMPONENT,charNameTag
 from utils import colorCodeIntGen,colorCodeHexGen, nameShortener
 
 def effect_file_content(datapackParams):
@@ -38,27 +38,76 @@ def effect_file_content(datapackParams):
     return "\n".join(lines)
 
 def quickEffect_file_content(datapackParams):
-    def generate_attack_item():
+    def generate_ability_item():
         colorScheme = characterParams.get('color_scheme',['white'])
-        for i,attack in enumerate(characterParams.get('attacks',[{"name":"Attack 1"},{"name":"Attack 2"},{"name":"Attack 3"},{"name":"Attack 4"}])):
+        for i,ability in enumerate(characterParams.get('ability_slots',[{"name":"Ability 1"},{"name":"Ability 2"},{"name":"Ability 3"},{"name":"Ability 4"}])):
             nameColorIndex = (i//2)%len(colorScheme)
             loreColorIndex = (nameColorIndex+1)%len(colorScheme)
-            itemCommand = f"item replace entity @s hotbar.{i} with minecraft:warped_fungus_on_a_stick[custom_data={ITEM_CUSTOM_DATA_COMPONENT},item_name={{\"text\":\"{attack if isinstance(attack,str) else attack.get('name')}\",\"color\":\"{colorCodeHexGen(colorScheme[nameColorIndex])}\"}},lore=[{{\"text\":\"{attack.get('description',"Lorem ipsum dolor sit amet")}\",\"color\":\"{colorCodeHexGen(colorScheme[loreColorIndex])}\"}}],custom_model_data={{strings:[\"{nameShortener(attack,type='namespace') if isinstance(attack,str) else nameShortener(attack.get('name',""),type='namespace')}\"]}}] 1"
+            itemCommand = f"item replace entity @s hotbar.{i} with minecraft:warped_fungus_on_a_stick[custom_data={ITEM_CUSTOM_DATA_COMPONENT},item_name={{\"text\":\"{ability if isinstance(ability,str) else ability.get('name')}\",\"color\":\"{colorCodeHexGen(colorScheme[nameColorIndex])}\"}},lore=[{{\"text\":\"{ability.get('description',"Lorem ipsum dolor sit amet")}\",\"color\":\"{colorCodeHexGen(colorScheme[loreColorIndex])}\"}}],custom_model_data={{strings:[\"{nameShortener(ability,type='namespace') if isinstance(ability,str) else nameShortener(ability.get('name',""),type='namespace')}\"]}}] 1"
 
             yield f"\t#Slot {i}\n\texecute unless data entity @s Inventory[{{Slot:{i}b}}] run {itemCommand}\n\texecute if data entity @s Inventory[{{Slot:{i}b}}].components.\"minecraft:custom_data\".{charNameTag} run {itemCommand}"
 
     lines = [
         "# Runs Every Quick Effect Interval(Half Sec)",
-        "# Attack Slots",
-        "\n\n".join(line for line in generate_attack_item())
+        "# Ability Slots",
+        "\n\n".join(line for line in generate_ability_item())
     ]
 
     return "\n".join(lines)
 
 def tick_file_content(datapackParams):
+    def generateInteractDetectors():
+        all_ability_lines = []
+        for i, ability in enumerate(characterParams.get('ability_slots', [{"name": "Ability 1", "action_slots": ["r-click"]}, {"name": "Ability 2", "action_slots": ["r-click"]}, {"name": "Ability 3", "action_slots": ["r-click"]}, {"name": "Ability 4", "action_slots": ["r-click"]}])):
+            ability_lines = [f"\t#Slot {i+1}"]
+            if isinstance(ability, dict):
+                action_slots = ability.get('action_slots', [])
+                
+                # R-Click / Shift-Click Logic
+                if "r-click" in action_slots:
+                    if "shift-click" not in action_slots:
+                        ability_lines.append(f"\texecute if score @s[scores={{SelectedSlot={i}}}] {RCLICK_SCOREBOARD_NAME} matches 1..3 run function {datapackParams.get('namespace')}:{charNamespace}/slot_{i+1}/rclick/0_init")
+                    else:
+                        ability_lines.append(f"\texecute if score @s[scores={{SelectedSlot={i}}},predicate=!{datapackParams.get('namespace')}:is_sneaking] {RCLICK_SCOREBOARD_NAME} matches 1..3 run function {datapackParams.get('namespace')}:{charNamespace}/slot_{i+1}/rclick/0_init")
+                        ability_lines.append(f"\texecute if score @s[scores={{SelectedSlot={i}}},predicate={datapackParams.get('namespace')}:is_sneaking] {RCLICK_SCOREBOARD_NAME} matches 1..3 run function {datapackParams.get('namespace')}:{charNamespace}/slot_{i+1}/shiftclick/0_init")
+                elif "shift-click" in action_slots:
+                    ability_lines.append(f"\texecute if score @s[scores={{SelectedSlot={i}}},predicate={datapackParams.get('namespace')}:is_sneaking] {RCLICK_SCOREBOARD_NAME} matches 1..3 run function {datapackParams.get('namespace')}:{charNamespace}/slot_{i+1}/shiftclick/0_init")
+
+                # Q-Press / Shift-Q-Press Logic
+                if "q-press" in action_slots:
+                    if "shift-q-press" not in action_slots:
+                        ability_lines.append(f"\texecute if score @s[scores={{SelectedSlot={i}}}] {QPRESS_SCOREBOARD_NAME} matches 1..3 run function {datapackParams.get('namespace')}:{charNamespace}/slot_{i+1}/qpress/0_init")
+                    else:
+                        ability_lines.append(f"\texecute if score @s[scores={{SelectedSlot={i}}},predicate=!{datapackParams.get('namespace')}:is_sneaking] {QPRESS_SCOREBOARD_NAME} matches 1..3 run function {datapackParams.get('namespace')}:{charNamespace}/slot_{i+1}/qpress/0_init")
+                        ability_lines.append(f"\texecute if score @s[scores={{SelectedSlot={i}}},predicate={datapackParams.get('namespace')}:is_sneaking] {QPRESS_SCOREBOARD_NAME} matches 1..3 run function {datapackParams.get('namespace')}:{charNamespace}/slot_{i+1}/shift_qpress/0_init")
+                elif "shift-q-press" in action_slots:
+                    ability_lines.append(f"\texecute if score @s[scores={{SelectedSlot={i}}},predicate={datapackParams.get('namespace')}:is_sneaking] {QPRESS_SCOREBOARD_NAME} matches 1..3 run function {datapackParams.get('namespace')}:{charNamespace}/slot_{i+1}/shift_qpress/0_init")
+            all_ability_lines.append("\n".join(ability_lines))
+        yield "\n\n".join(all_ability_lines)
+
     lines = [
         "# Runs Every Tick",
-        ""
+        f"execute store result score @s SelectedSlot run data get entity @s SelectedItemSlot"
+        "\n# Ability",
+        f"{"\n\n".join(line for line in generateInteractDetectors())}"
     ]
+
+    abilities = characterParams.get('ability_slots',[])
+    click = False
+    drop = False
+
+    for ability in abilities:
+        if isinstance(ability,dict):
+            slots = ability.get('action_slots')
+            for slot in slots:
+                if slot in ["r-click","shift-click"]:        click = True
+                if slot in ['q-press','shift-q-press']:      drop = True
+                if click and drop:
+                    break
+
+        if click and drop:
+            break
+    lines.append(f"\nscoreboard players reset @s {RCLICK_SCOREBOARD_NAME}" if click else "")
+    lines.append(f"scoreboard players reset @s {QPRESS_SCOREBOARD_NAME}" if drop else "")
 
     return "\n".join(lines)
