@@ -1,5 +1,5 @@
 from constants import characterParams, charNameTag, charNamespace, ITEM_NAME_COMPONENT, ITEM_LORE_COMPONENT, HEAD_CUSTOM_DATA_COMPONENT, ITEM_PROFILE_COMPONENT
-from .main_halfsec_builder import yield_crafting_recipe
+from .main_builders import yield_crafting_recipe
 from utils import hexColorToInt, brightenHexColor, colorCodeHexGen
 
 def craft_file_content():

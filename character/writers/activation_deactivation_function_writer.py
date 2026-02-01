@@ -1,0 +1,26 @@
+import os
+from ..activation_deactivation_builder import activate_file_content, deactivate_file_content
+from constants import charNamespace
+
+def writeActivationFunction(datapackParams):
+    activation_file_path = os.path.join(
+        os.getenv('DATAPACKS_PATH'), datapackParams['pack_name'],
+        'data', datapackParams['namespace'], 'function', charNamespace,
+        'activate.mcfunction'
+    )
+    os.makedirs(os.path.dirname(activation_file_path), exist_ok=True)
+
+    with open(activation_file_path, 'w') as f:
+        f.write(activate_file_content(datapackParams))
+
+def writeDeactivationFunction(datapackParams):
+    deactivation_file_path = os.path.join(
+        os.getenv('DATAPACKS_PATH'), datapackParams['pack_name'],
+        'data', datapackParams['namespace'], 'function', charNamespace,
+        'deactivate.mcfunction'
+    )
+
+    os.makedirs(os.path.dirname(deactivation_file_path), exist_ok=True)
+
+    with open(deactivation_file_path, 'w') as f:
+        f.write(deactivate_file_content(datapackParams))

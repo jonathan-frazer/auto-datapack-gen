@@ -1,5 +1,14 @@
-from constants import ITEM_CUSTOM_DATA_COMPONENT, characterParams, charNameTag
+from constants import charNamespace, characterParams, charNameTag, ITEM_CUSTOM_DATA_COMPONENT
 from utils import colorCodeHexGen
+
+def activate_file_content(datapackParams):
+    lines = [
+        f"# Activates {characterParams.get('name')}",
+        f'tellraw @s [{{"text":"{characterParams.get("name")} activated!","color":"{colorCodeHexGen(characterParams.get("color_scheme")[0])}"}}]',
+        f"tag @s add {charNameTag}",
+        f"\n#Apply Effects\nfunction {datapackParams['namespace']}:{charNamespace}/effect"
+    ]
+    return "\n".join(lines)
 
 def deactivate_file_content(datapackParams):
     def delete_armor_line():
@@ -20,12 +29,13 @@ def deactivate_file_content(datapackParams):
             yield f"effect clear @s minecraft:{effect_name}"
 
     lines = [
-        f"# Deactivates {characterParams.get('name')}",
+        f"#Deactivates {characterParams.get('name')}",
         f"tag @s remove {charNameTag}",
         f'tellraw @s [{{"text":"{characterParams.get("name")} deactivated!","color":"{colorCodeHexGen(characterParams.get("color_scheme")[1])}"}}]',
         "\n#Deletes Armor",
-        "\n".join(line for line in delete_armor_line()),
+        *[line for line in delete_armor_line()],
         "\n#Clear Effects",
-        "\n".join(line for line in delete_effects())
+        *[line for line in delete_effects()]
     ]
+
     return "\n".join(lines)

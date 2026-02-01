@@ -1,5 +1,13 @@
-from constants import characterParams, charNameTag, charNamespace
+from constants import characterParams, charNameTag, charNamespace, ITEM_CUSTOM_DATA_COMPONENT
 from utils import hexColorToInt, brightenHexColor
+
+def main_file_content(datapackParams):
+    lines = [
+        "# Runs Every Tick",
+        f"execute as @a[tag={charNameTag}] run function {datapackParams['namespace']}:{charNamespace}/tick"
+    ]
+
+    return "\n".join(lines)
 
 def yield_crafting_recipe():
     for item, data in characterParams.get('crafting_recipe', {}).items():
@@ -35,4 +43,13 @@ def main_halfsec_file_content(datapackParams):
     ]
     lines.append(f"\nschedule function {datapackParams['namespace']}:main_halfsec 10t")
 
+    return "\n".join(lines)
+
+def main_sec_file_content(datapackParams):
+    lines = [
+        "# Runs Every Second",
+        f"execute as @a[tag={charNameTag}] run function {datapackParams['namespace']}:{charNamespace}/effect"
+    ]
+    lines.append(f"\nkill @e[type=item,nbt={{Item:{{components:{{\"minecraft:custom_data\":{ITEM_CUSTOM_DATA_COMPONENT}}}}}}}]")
+    lines.append(f"\nschedule function {datapackParams['namespace']}:main_sec 1s")
     return "\n".join(lines)

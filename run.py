@@ -13,18 +13,13 @@ from initialization.writers.pack_meta_writer import writePackMeta
 from initialization.writers.function_tags_writer import writeFunctionTags
 from initialization.writers.predicate_files_initializer import initializePredicateFiles
 from initialization.writers.reload_file_writer import writeReloadFile
-from initialization.writers.main_file_writer import writeMainFile
-from initialization.writers.main_halfsec_file_writer import writeMainHalfSecFile
-from initialization.writers.main_sec_file_writer import writeMainSecFile
+from initialization.writers.main_function_writers import writeMainFile, writeMainHalfSecFile, writeMainSecFile
 from initialization.writers.craft_file_writer import writeCraftFile
 
 # Character Pipeline Imports
 from character.writers.item_detect_predicate_creator import createItemDetectPredicate
-from character.writers.activation_function_writer import writeActivationFunction
-from character.writers.deactivation_function_writer import writeDeactivationFunction
-from character.writers.tick_function_writer import writeTickFunction
-from character.writers.effect_function_writer import writeEffectFunction
-from character.writers.quick_effect_function_writer import writeQuickEffectFunction
+from character.writers.activation_deactivation_function_writer import writeActivationFunction, writeDeactivationFunction
+from character.writers.effect_function_writers import writeTickFunction, writeEffectFunction, writeQuickEffectFunction
 
 load_dotenv()
 datapackParams = json.loads(open('parameters/datapack_parameters.json').read())

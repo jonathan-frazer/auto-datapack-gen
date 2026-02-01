@@ -32,3 +32,19 @@ def effect_file_content(datapackParams):
     ]
 
     return "\n".join(lines)
+
+def quickEffect_file_content(datapackParams):
+    lines = [
+        "# Runs Every Quick Effect Interval(Half Sec)",
+        ""
+    ]
+
+    return "\n".join(lines)
+
+def tick_file_content(datapackParams):
+    lines = [
+        "# Runs Every Tick",
+        ""
+    ]
+
+    return "\n".join(lines)
