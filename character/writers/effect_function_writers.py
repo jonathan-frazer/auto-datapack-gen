@@ -1,5 +1,5 @@
 import os
-from ..effect_builders import effect_file_content, quickEffect_file_content, tick_file_content
+from ..duration_builders import effect_file_content, quickEffect_file_content, tick_file_content
 from constants import charNamespace
 
 def writeEffectFunction(datapackParams):
