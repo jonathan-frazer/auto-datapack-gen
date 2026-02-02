@@ -14,7 +14,7 @@ def activate_file_content(datapackParams):
 				lines.append(f"\t#Swap Cycle\n\tscoreboard players set @s {nameShortener(charNameTag,max_length=8)}{i}Swap 0")
 				found = False
 				for j,subAbility in enumerate(ability):
-					if isinstance(subAbility,dict) and 'cooldown' in subAbility:
+					if isinstance(subAbility,dict) and ('cooldown' in subAbility or 'sneakCooldown' in subAbility):
 						if not found:
 							lines.append("\t#Cooldowns")
 							found = True
@@ -75,7 +75,7 @@ def deactivate_file_content(datapackParams):
 				lines.append(f"\t#Swap Cycle\n\tscoreboard players reset @s {nameShortener(charNameTag,max_length=8)}{i}Swap")
 				found = False
 				for j,subAbility in enumerate(ability):
-					if isinstance(subAbility,dict) and 'cooldown' in subAbility:
+					if isinstance(subAbility,dict) and ('cooldown' in subAbility or 'sneakCooldown' in subAbility):
 						if not found:
 							lines.append("\t#Cooldowns")
 							found = True

@@ -32,30 +32,30 @@
                 "q-press",
                 "shift-q-press"
             ],
-            "cooldown": 2.5
+            "cooldown": [1.0, 2.0, 3.0, 4.0, 5.0, 6.0]
         },
         [
             {
                 "name": "Fire Dash",
                 "description": "Quickly dashes forward leaving a trail of fire",
-                "sneakVariant": false,
+                "sneakCooldown": 5.0,
                 "cooldown": 2.5
             },
             {
                 "name": "Inferno Shield",
                 "description": "Surrounds self with a barrier of flames, burned attackers",
-                "sneakVariant": true,
+                "sneakCooldown": 1.5,
                 "cooldown": 1.5
             },
             {
                 "name": "Fireball Barrage",
                 "description": "Launches a barrage of fireballs that explode on impact",
-                "sneakVariant": false
+                "cooldown": 3.0
             },
             {
                 "name": "Fiery Frenzy",
                 "description": "Increases speed and strength for a short duration",
-                "sneakVariant": true
+                "sneakCooldown": 10.0
             }
         ],
         {
@@ -64,18 +64,18 @@
             "action_slots": [
                 "r-click",
                 "q-press"
-            ]
+            ],
+            "cooldown": 2.0
         },
         [
             {
                 "name": "Fire Blitz",
-                "description": "Quickly dashes forward in flame",
-                "sneakVariant": false
+                "description": "Quickly dashes forward in flame"
             },
             {
                 "name": "Inferno Maze",
                 "description": "Create a maze of flames, Burning attackers",
-                "sneakVariant": true
+                "sneakCooldown": 2.0
             }
         ]
     ],

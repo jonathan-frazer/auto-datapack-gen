@@ -44,7 +44,7 @@ def reload_file_content(datapackParams):
 				lines.append(f"\t#Swap Cycle\n\tscoreboard objectives add {nameShortener(charNameTag,max_length=8)}{i}Swap dummy")
 				found = False
 				for j,subAbility in enumerate(ability):
-					if isinstance(subAbility,dict) and 'cooldown' in subAbility:
+					if isinstance(subAbility,dict) and ('cooldown' in subAbility or 'sneakCooldown' in subAbility):
 						if not found:
 							lines.append("\t#Cooldowns")
 							found = True

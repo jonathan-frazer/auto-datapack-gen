@@ -42,7 +42,7 @@ def main_halfsec_file_content(datapackParams):
 			lines.append(f"#Slot {i+1}")
 			if isinstance(ability,list):
 				for j,subAbility in enumerate(ability):
-					if isinstance(subAbility,dict) and 'cooldown' in subAbility:
+					if isinstance(subAbility,dict) and ('cooldown' in subAbility or 'sneakCooldown' in subAbility):
 						if not found:
 							lines.appendleft("#Decrement Cooldowns")
 							found = True
