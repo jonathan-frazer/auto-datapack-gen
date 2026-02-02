@@ -25,12 +25,12 @@
             "name": "Blazing Fury",
             "description": "Ignites Enemies",
             "action_slots": [
-                {"slot": "r-click", "cooldown": 1.0},
-                {"slot": "shift-click", "cooldown": 2.0},
-                {"slot": "f-press", "cooldown": 3.0},
-                {"slot": "shift-f-press", "cooldown": 4.0},
-                {"slot": "q-press", "cooldown": 5.0},
-                {"slot": "shift-q-press", "cooldown": 6.0}
+                {"action": "r-click", "cooldown": 1.0},
+                {"action": "shift-click", "cooldown": 2.0},
+                {"action": "f-press", "cooldown": 3.0},
+                {"action": "shift-f-press", "cooldown": 4.0},
+                {"action": "q-press", "cooldown": 5.0},
+                {"action": "shift-q-press", "cooldown": 6.0}
             ]
         },
         [
@@ -61,8 +61,8 @@
             "name": "Ember Flare",
             "description": "Launches fiery projectiles that explode on impact",
             "action_slots": [
-                {"slot": "r-click", "cooldown": 2.0},
-                {"slot": "q-press", "cooldown": 2.0}
+                {"action": "r-click", "cooldown": 2.0},
+                {"action": "q-press", "cooldown": 2.0}
             ]
         },
         [
@@ -73,7 +73,8 @@
             {
                 "name": "Inferno Maze",
                 "description": "Create a maze of flames, Burning attackers",
-                "sneakCooldown": 2.0
+                "sneakCooldown": 2.0,
+                "cooldown": 0.5
             }
         ]
     ],

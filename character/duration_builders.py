@@ -90,7 +90,7 @@ def tick_file_content(datapackParams):
 			ability_lines = [f"\t#Slot {i+1}"]
 			if isinstance(ability, dict):
 				action_slot_entries = get_action_slot_entries(ability.get('action_slots',['f-press','q-press','r-click']))
-				slot_names = [e['slot'] for e in action_slot_entries]
+				slot_names = [e['action'] for e in action_slot_entries]
 				if 'f-press' not in slot_names: slot_names.append('f-press')
 				if 'q-press' not in slot_names: slot_names.append('q-press')
 				
@@ -135,7 +135,7 @@ def tick_file_content(datapackParams):
 		if isinstance(ability,dict):
 			action_slot_entries = get_action_slot_entries(ability.get('action_slots', []))
 			for entry in action_slot_entries:
-				slot = entry['slot']
+				slot = entry['action']
 				if slot in ["r-click","shift-click"]:        click = True
 				if slot in ['q-press','shift-q-press']:      drop = True
 				if click and drop:

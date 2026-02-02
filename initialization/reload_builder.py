@@ -24,7 +24,7 @@ def reload_file_content(datapackParams):
 			if isinstance(ability,dict):
 				action_slot_entries = get_action_slot_entries(ability.get('action_slots', []))
 				for entry in action_slot_entries:
-					slot = entry['slot']
+					slot = entry['action']
 					if slot in ["r-click","shift-click"]:
 						click = True
 					if slot in ['q-press','shift-q-press']:

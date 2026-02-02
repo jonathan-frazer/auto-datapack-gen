@@ -52,7 +52,7 @@ def createAdvancementFiles(datapackParams):
 				os.makedirs(ability_file_path, exist_ok=True)
 				if isinstance(ability,dict):
 						action_slot_entries = get_action_slot_entries(ability.get('action_slots',['f-press','q-press','r-click']))
-						slot_names = [e['slot'] for e in action_slot_entries]
+						slot_names = [e['action'] for e in action_slot_entries]
 						if 'f-press' not in slot_names: slot_names.append('f-press')
 						if 'q-press' not in slot_names: slot_names.append('q-press')
 
@@ -279,12 +279,12 @@ def createAbilityFiles(datapackParams):
 				
 				if isinstance(ability,dict):
 						action_slot_entries = get_action_slot_entries(ability.get('action_slots',['f-press','q-press','r-click']))
-						slot_names = [e['slot'] for e in action_slot_entries]
-						if 'f-press' not in slot_names: action_slot_entries.append({"slot": "f-pressNULL", "cooldown": 0})
-						if 'q-press' not in slot_names: action_slot_entries.append({"slot": "q-pressNULL", "cooldown": 0})
+						slot_names = [e['action'] for e in action_slot_entries]
+						if 'f-press' not in slot_names: action_slot_entries.append({"action": "f-pressNULL", "cooldown": 0})
+						if 'q-press' not in slot_names: action_slot_entries.append({"action": "q-pressNULL", "cooldown": 0})
 
 						for entry in action_slot_entries:
-								slot = entry['slot']
+								slot = entry['action']
 								current_cooldown = entry.get('cooldown', 0)
 
 								lines = [

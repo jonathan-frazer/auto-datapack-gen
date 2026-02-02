@@ -130,18 +130,18 @@ def hexColorToInt(color):
 
 def get_action_slot_entries(action_slots, default_slots=None):
     """
-    Normalize action_slots to list of dicts with 'slot' and 'cooldown'.
+    Normalize action_slots to list of dicts with 'action' and 'cooldown'.
     Supports both old format (list of strings) and new format (list of dicts).
     """
     default_slots = default_slots or ['f-press', 'q-press', 'r-click']
     if not action_slots:
-        return [{"slot": s, "cooldown": 0} for s in default_slots]
+        return [{"action": s, "cooldown": 0} for s in default_slots]
     result = []
     for e in action_slots:
         if isinstance(e, dict):
-            result.append({"slot": e.get('slot', ''), "cooldown": e.get('cooldown', 0)})
+            result.append({"action": e.get('action', ''), "cooldown": e.get('cooldown', 0)})
         else:
-            result.append({"slot": str(e), "cooldown": 0})
+            result.append({"action": str(e), "cooldown": 0})
     return result
 
 
