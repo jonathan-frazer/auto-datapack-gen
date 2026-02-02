@@ -1,5 +1,5 @@
 from constants import charNamespace, characterParams, charNameTag, ITEM_CUSTOM_DATA_COMPONENT
-from utils import colorCodeHexGen, nameShortener
+from utils import colorCodeHexGen, nameShortener, get_action_slot_entries
 
 def activate_file_content(datapackParams):
 	def initializeScoreboards():
@@ -21,9 +21,12 @@ def activate_file_content(datapackParams):
 						lines.append(f"\texecute unless score @s {nameShortener(subAbility.get('name',f"SubAbility{j}"),max_length=12)}{i}CD matches 1.. run scoreboard players set @s {nameShortener(subAbility.get('name',f"SubAbility{j}"),max_length=12)}{i}CD 0")
 				continue
 			
-			if isinstance(ability,dict) and 'cooldown' in ability:
-				lines.append("\t#Cooldowns")
-				lines.append(f"\texecute unless score @s {nameShortener(ability.get('name',f"Ability{i}"),max_length=12)}{i}CD matches 1.. run scoreboard players set @s {nameShortener(ability.get('name',f"Ability{i}"),max_length=12)}{i}CD 0")
+			if isinstance(ability,dict):
+				action_slot_entries = get_action_slot_entries(ability.get('action_slots', []))
+				has_cooldown = any(e.get('cooldown', 0) > 0 for e in action_slot_entries)
+				if has_cooldown:
+					lines.append("\t#Cooldowns")
+					lines.append(f"\texecute unless score @s {nameShortener(ability.get('name',f"Ability{i}"),max_length=12)}{i}CD matches 1.. run scoreboard players set @s {nameShortener(ability.get('name',f"Ability{i}"),max_length=12)}{i}CD 0")
 			lines.append("\t#User Defined Scoreboards")
 			lines.append("")
 
@@ -82,9 +85,12 @@ def deactivate_file_content(datapackParams):
 						lines.append(f"\tscoreboard players reset @s {nameShortener(subAbility.get('name',f"SubAbility{j}"),max_length=12)}{i}CD")
 				continue
 			
-			if isinstance(ability,dict) and 'cooldown' in ability:
-				lines.append("\t#Cooldowns")
-				lines.append(f"\tscoreboard players reset @s {nameShortener(ability.get('name',f"Ability{i}"),max_length=12)}{i}CD")
+			if isinstance(ability,dict):
+				action_slot_entries = get_action_slot_entries(ability.get('action_slots', []))
+				has_cooldown = any(e.get('cooldown', 0) > 0 for e in action_slot_entries)
+				if has_cooldown:
+					lines.append("\t#Cooldowns")
+					lines.append(f"\tscoreboard players reset @s {nameShortener(ability.get('name',f"Ability{i}"),max_length=12)}{i}CD")
 			lines.append("\t#User Defined Scoreboards")
 			lines.append("")
 

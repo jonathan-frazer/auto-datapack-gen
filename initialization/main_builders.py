@@ -1,6 +1,6 @@
 from collections import deque
 from constants import characterParams, charNameTag, charNamespace, ITEM_CUSTOM_DATA_COMPONENT
-from utils import hexColorToInt, brightenHexColor, nameShortener
+from utils import hexColorToInt, brightenHexColor, nameShortener, get_action_slot_entries
 
 def main_file_content(datapackParams):
 	lines = [
@@ -50,12 +50,15 @@ def main_halfsec_file_content(datapackParams):
 						lines.append(f"\texecute as @a[scores={{{nameShortener(subAbility.get('name',f"SubAbility{j}"),max_length=12)}{i}CD=..-1}}] run scoreboard players set @s {nameShortener(subAbility.get('name',f"SubAbility{j}"),max_length=12)}{i}CD 0")
 				continue
 			
-			if isinstance(ability,dict) and 'cooldown' in ability:
-				if not found:
-					lines.appendleft("#Decrement Cooldowns")
-					found = True
-				lines.append(f"\texecute as @a[scores={{{nameShortener(ability.get('name',f"Ability{i}"),max_length=12)}{i}CD=1..}}] run scoreboard players remove @s {nameShortener(ability.get('name',f"Ability{i}"),max_length=12)}{i}CD 1")
-				lines.append(f"\texecute as @a[scores={{{nameShortener(ability.get('name',f"Ability{i}"),max_length=12)}{i}CD=..-1}}] run scoreboard players set @s {nameShortener(ability.get('name',f"Ability{i}"),max_length=12)}{i}CD 0")
+			if isinstance(ability,dict):
+				action_slot_entries = get_action_slot_entries(ability.get('action_slots', []))
+				has_cooldown = any(e.get('cooldown', 0) > 0 for e in action_slot_entries)
+				if has_cooldown:
+					if not found:
+						lines.appendleft("#Decrement Cooldowns")
+						found = True
+					lines.append(f"\texecute as @a[scores={{{nameShortener(ability.get('name',f"Ability{i}"),max_length=12)}{i}CD=1..}}] run scoreboard players remove @s {nameShortener(ability.get('name',f"Ability{i}"),max_length=12)}{i}CD 1")
+					lines.append(f"\texecute as @a[scores={{{nameShortener(ability.get('name',f"Ability{i}"),max_length=12)}{i}CD=..-1}}] run scoreboard players set @s {nameShortener(ability.get('name',f"Ability{i}"),max_length=12)}{i}CD 0")
 
 		return "\n".join(lines)
 

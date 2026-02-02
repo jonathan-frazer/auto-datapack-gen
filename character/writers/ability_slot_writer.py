@@ -1,7 +1,7 @@
 import os
 from constants import ITEM_CUSTOM_DATA_COMPONENT, charNameTag, charNamespace,characterParams
 from collections import deque
-from utils import nameShortener,colorCodeHexGen
+from utils import nameShortener, colorCodeHexGen, get_action_slot_entries
 
 def createAdvancementFiles(datapackParams):
 		advancement_file_path = os.path.join(
@@ -51,11 +51,12 @@ def createAdvancementFiles(datapackParams):
 				ability_file_path = os.path.join(advancement_file_path, (nameShortener(ability,type='namespace') if isinstance(ability,str) else nameShortener(ability.get('name'),type='namespace')))
 				os.makedirs(ability_file_path, exist_ok=True)
 				if isinstance(ability,dict):
-						action_slots = ability.get('action_slots',['f-press','q-press','r-click'])[:]
-						if 'f-press' not in action_slots: action_slots.append('f-press')
-						if 'q-press' not in action_slots: action_slots.append('q-press')
+						action_slot_entries = get_action_slot_entries(ability.get('action_slots',['f-press','q-press','r-click']))
+						slot_names = [e['slot'] for e in action_slot_entries]
+						if 'f-press' not in slot_names: slot_names.append('f-press')
+						if 'q-press' not in slot_names: slot_names.append('q-press')
 
-						if 'f-press' in action_slots and 'shift-f-press' not in action_slots:
+						if 'f-press' in slot_names and 'shift-f-press' not in slot_names:
 								with open(os.path.join(ability_file_path,'fpress.json'),'w') as f:
 										f.write(f"""{{
 	"criteria": {{
@@ -78,7 +79,7 @@ def createAdvancementFiles(datapackParams):
 	}}
 }}""")
 
-						if 'f-press' in action_slots and 'shift-f-press' in action_slots:
+						if 'f-press' in slot_names and 'shift-f-press' in slot_names:
 								with open(os.path.join(ability_file_path,'fpress.json'),'w') as f:
 										f.write(f"""{{
 	"criteria": {{
@@ -128,7 +129,7 @@ def createAdvancementFiles(datapackParams):
 	}}
 }}""")
 						
-						if 'shift-f-press' in action_slots and 'f-press' not in action_slots:
+						if 'shift-f-press' in slot_names and 'f-press' not in slot_names:
 								with open(os.path.join(ability_file_path,'shift_fpress.json'),'w') as f:
 										f.write(f"""{{
 	"criteria": {{
@@ -277,21 +278,14 @@ def createAbilityFiles(datapackParams):
 
 				
 				if isinstance(ability,dict):
-						action_slots = ability.get('action_slots',['f-press','q-press','r-click'])[:]
-						if 'f-press' not in action_slots: action_slots.append('f-pressNULL')
-						if 'q-press' not in action_slots: action_slots.append('q-pressNULL')
+						action_slot_entries = get_action_slot_entries(ability.get('action_slots',['f-press','q-press','r-click']))
+						slot_names = [e['slot'] for e in action_slot_entries]
+						if 'f-press' not in slot_names: action_slot_entries.append({"slot": "f-pressNULL", "cooldown": 0})
+						if 'q-press' not in slot_names: action_slot_entries.append({"slot": "q-pressNULL", "cooldown": 0})
 
-						cooldown_val = ability.get('cooldown', 0)
-						if isinstance(cooldown_val, list):
-								if len(cooldown_val) != len(action_slots):
-										raise ValueError(f"Cooldown array length ({len(cooldown_val)}) must match action_slots length ({len(action_slots)}) for ability '{ability.get('name')}'")
-						
-						for idx, slot in enumerate(action_slots):
-								current_cooldown = 0
-								if isinstance(cooldown_val, list):
-										current_cooldown = cooldown_val[idx]
-								else:
-										current_cooldown = cooldown_val
+						for entry in action_slot_entries:
+								slot = entry['slot']
+								current_cooldown = entry.get('cooldown', 0)
 
 								lines = [
 									f"say {i}.{ability if isinstance(ability,str) else ability.get('name')}:{slot}",

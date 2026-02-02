@@ -1,5 +1,5 @@
 from constants import QPRESS_SCOREBOARD_NAME, RCLICK_SCOREBOARD_NAME, charNamespace, characterParams, ITEM_CUSTOM_DATA_COMPONENT,HIDDEN_COMPONENT,charNameTag
-from utils import colorCodeIntGen,colorCodeHexGen, nameShortener
+from utils import colorCodeIntGen, colorCodeHexGen, nameShortener, get_action_slot_entries
 
 def effect_file_content(datapackParams):
 	def generate_armor_line():
@@ -89,28 +89,29 @@ def tick_file_content(datapackParams):
 
 			ability_lines = [f"\t#Slot {i+1}"]
 			if isinstance(ability, dict):
-				action_slots = ability.get('action_slots',['f-press','q-press','r-click'])[:]
-				if 'f-press' not in action_slots: action_slots.append('f-press')
-				if 'q-press' not in action_slots: action_slots.append('q-press')
+				action_slot_entries = get_action_slot_entries(ability.get('action_slots',['f-press','q-press','r-click']))
+				slot_names = [e['slot'] for e in action_slot_entries]
+				if 'f-press' not in slot_names: slot_names.append('f-press')
+				if 'q-press' not in slot_names: slot_names.append('q-press')
 				
 				# R-Click / Shift-Click Logic
-				if "r-click" in action_slots:
-					if "shift-click" not in action_slots:
+				if "r-click" in slot_names:
+					if "shift-click" not in slot_names:
 						ability_lines.append(f"\texecute if score @s[scores={{SelectedSlot={i}}}] {RCLICK_SCOREBOARD_NAME} matches 1..3 run function {datapackParams.get('namespace')}:{charNamespace}/slot_{i}/rclick/0_check")
 					else:
 						ability_lines.append(f"\texecute if score @s[scores={{SelectedSlot={i}}},predicate=!{datapackParams.get('namespace')}:is_sneaking] {RCLICK_SCOREBOARD_NAME} matches 1..3 run function {datapackParams.get('namespace')}:{charNamespace}/slot_{i}/rclick/0_check")
 						ability_lines.append(f"\texecute if score @s[scores={{SelectedSlot={i}}},predicate={datapackParams.get('namespace')}:is_sneaking] {RCLICK_SCOREBOARD_NAME} matches 1..3 run function {datapackParams.get('namespace')}:{charNamespace}/slot_{i}/shiftclick/0_check")
-				elif "shift-click" in action_slots:
+				elif "shift-click" in slot_names:
 					ability_lines.append(f"\texecute if score @s[scores={{SelectedSlot={i}}},predicate={datapackParams.get('namespace')}:is_sneaking] {RCLICK_SCOREBOARD_NAME} matches 1..3 run function {datapackParams.get('namespace')}:{charNamespace}/slot_{i}/shiftclick/0_check")
 
 				# Q-Press / Shift-Q-Press Logic
-				if "q-press" in action_slots:
-					if "shift-q-press" not in action_slots:
+				if "q-press" in slot_names:
+					if "shift-q-press" not in slot_names:
 						ability_lines.append(f"\texecute if score @s[scores={{SelectedSlot={i}}}] {QPRESS_SCOREBOARD_NAME} matches 1..3 run function {datapackParams.get('namespace')}:{charNamespace}/slot_{i}/qpress/0_check")
 					else:
 						ability_lines.append(f"\texecute if score @s[scores={{SelectedSlot={i}}},predicate=!{datapackParams.get('namespace')}:is_sneaking] {QPRESS_SCOREBOARD_NAME} matches 1..3 run function {datapackParams.get('namespace')}:{charNamespace}/slot_{i}/qpress/0_check")
 						ability_lines.append(f"\texecute if score @s[scores={{SelectedSlot={i}}},predicate={datapackParams.get('namespace')}:is_sneaking] {QPRESS_SCOREBOARD_NAME} matches 1..3 run function {datapackParams.get('namespace')}:{charNamespace}/slot_{i}/shift_qpress/0_check")
-				elif "shift-q-press" in action_slots:
+				elif "shift-q-press" in slot_names:
 					ability_lines.append(f"\texecute if score @s[scores={{SelectedSlot={i}}},predicate={datapackParams.get('namespace')}:is_sneaking] {QPRESS_SCOREBOARD_NAME} matches 1..3 run function {datapackParams.get('namespace')}:{charNamespace}/slot_{i}/shift_qpress/0_check")
 			all_ability_lines.append("\n".join(ability_lines))
 		yield "\n\n".join(all_ability_lines)
@@ -132,8 +133,9 @@ def tick_file_content(datapackParams):
 			drop = True
 			break
 		if isinstance(ability,dict):
-			slots = ability.get('action_slots')
-			for slot in slots:
+			action_slot_entries = get_action_slot_entries(ability.get('action_slots', []))
+			for entry in action_slot_entries:
+				slot = entry['slot']
 				if slot in ["r-click","shift-click"]:        click = True
 				if slot in ['q-press','shift-q-press']:      drop = True
 				if click and drop:

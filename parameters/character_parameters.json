@@ -25,14 +25,13 @@
             "name": "Blazing Fury",
             "description": "Ignites Enemies",
             "action_slots": [
-                "r-click",
-                "shift-click",
-                "f-press",
-                "shift-f-press",
-                "q-press",
-                "shift-q-press"
-            ],
-            "cooldown": [1.0, 2.0, 3.0, 4.0, 5.0, 6.0]
+                {"slot": "r-click", "cooldown": 1.0},
+                {"slot": "shift-click", "cooldown": 2.0},
+                {"slot": "f-press", "cooldown": 3.0},
+                {"slot": "shift-f-press", "cooldown": 4.0},
+                {"slot": "q-press", "cooldown": 5.0},
+                {"slot": "shift-q-press", "cooldown": 6.0}
+            ]
         },
         [
             {
@@ -62,10 +61,9 @@
             "name": "Ember Flare",
             "description": "Launches fiery projectiles that explode on impact",
             "action_slots": [
-                "r-click",
-                "q-press"
-            ],
-            "cooldown": 2.0
+                {"slot": "r-click", "cooldown": 2.0},
+                {"slot": "q-press", "cooldown": 2.0}
+            ]
         },
         [
             {
