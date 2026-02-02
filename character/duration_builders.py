@@ -47,7 +47,7 @@ def quickEffect_file_content(datapackParams):
 			if isinstance(ability, list):
 				multiToolLines = []
 				for j,subAbility in enumerate(ability):
-					condition = f"[scores={{{nameShortener(charNameTag,max_length=8,type='namespace')}{i}Swap={j}}}]"
+					condition = f"[scores={{{nameShortener(charNameTag,max_length=8)}{i}Swap={j}}}]"
 					itemCommand = f"item replace entity @s hotbar.{i} with minecraft:warped_fungus_on_a_stick[custom_data={ITEM_CUSTOM_DATA_COMPONENT},item_name={{\"text\":\"{subAbility if isinstance(subAbility,str) else subAbility.get('name')}\",\"color\":\"{colorCodeHexGen(colorScheme[nameColorIndex])}\"}},lore=[{{\"text\":\"{subAbility.get('description',"Lorem ipsum dolor sit amet")}\",\"color\":\"{colorCodeHexGen(colorScheme[loreColorIndex])}\"}}],custom_model_data={{strings:[\"{nameShortener(subAbility,type='namespace') if isinstance(subAbility,str) else nameShortener(subAbility.get('name',""),type='namespace')}\"]}}] 1"
 					multiToolLines.append(f"\texecute unless data entity @s{condition} Inventory[{{Slot:{i}b}}] run {itemCommand}\n\texecute if data entity @s{condition} Inventory[{{Slot:{i}b}}].components.\"minecraft:custom_data\".{charNameTag} run {itemCommand}")
 				yield f"\t#Slot {i}\n{"\n".join(multiToolLines)}" 
@@ -77,10 +77,10 @@ def tick_file_content(datapackParams):
 				for j,subAbility in enumerate(ability):
 					ability_lines.append(f"\t\t#{subAbility.get('name',f"SubAbility {j+1}")}")
 					if isinstance(subAbility,dict) and subAbility.get('sneakVariant',False):
-						ability_lines.append(f"\t\texecute if score @s[predicate=!{datapackParams['namespace']}:is_sneaking,scores={{SelectedSlot={i},{nameShortener(charNameTag,max_length=8,type='namespace')}{i}Swap={j}}}] {RCLICK_SCOREBOARD_NAME} matches 1..3 run function {datapackParams.get('namespace')}:{charNamespace}/slot_{i}/{j+1}_{nameShortener(subAbility.get('name',"SubAbility"),max_length=16,type="namespace")}/rclick/0_check")
-						ability_lines.append(f"\t\texecute if score @s[predicate={datapackParams['namespace']}:is_sneaking,scores={{SelectedSlot={i},{nameShortener(charNameTag,max_length=8,type='namespace')}{i}Swap={j}}}] {RCLICK_SCOREBOARD_NAME} matches 1..3 run function {datapackParams.get('namespace')}:{charNamespace}/slot_{i}/{j+1}_{nameShortener(subAbility.get('name',"SubAbility"),max_length=16,type="namespace")}/shiftclick/0_check")
+						ability_lines.append(f"\t\texecute if score @s[predicate=!{datapackParams['namespace']}:is_sneaking,scores={{SelectedSlot={i},{nameShortener(charNameTag,max_length=8)}{i}Swap={j}}}] {RCLICK_SCOREBOARD_NAME} matches 1..3 run function {datapackParams.get('namespace')}:{charNamespace}/slot_{i}/{j+1}_{nameShortener(subAbility.get('name',"SubAbility"),max_length=16,type="namespace")}/rclick/0_check")
+						ability_lines.append(f"\t\texecute if score @s[predicate={datapackParams['namespace']}:is_sneaking,scores={{SelectedSlot={i},{nameShortener(charNameTag,max_length=8)}{i}Swap={j}}}] {RCLICK_SCOREBOARD_NAME} matches 1..3 run function {datapackParams.get('namespace')}:{charNamespace}/slot_{i}/{j+1}_{nameShortener(subAbility.get('name',"SubAbility"),max_length=16,type="namespace")}/shiftclick/0_check")
 					else:
-						ability_lines.append(f"\t\texecute if score @s[scores={{SelectedSlot={i},{nameShortener(charNameTag,max_length=8,type='namespace')}{i}Swap={j}}}] {RCLICK_SCOREBOARD_NAME} matches 1..3 run function {datapackParams.get('namespace')}:{charNamespace}/slot_{i}/{j+1}_{nameShortener(subAbility.get('name',"SubAbility"),max_length=16,type="namespace")}/rclick/0_check")
+						ability_lines.append(f"\t\texecute if score @s[scores={{SelectedSlot={i},{nameShortener(charNameTag,max_length=8)}{i}Swap={j}}}] {RCLICK_SCOREBOARD_NAME} matches 1..3 run function {datapackParams.get('namespace')}:{charNamespace}/slot_{i}/{j+1}_{nameShortener(subAbility.get('name',"SubAbility"),max_length=16,type="namespace")}/rclick/0_check")
 					ability_lines.append("")
 				ability_lines.append("")
 

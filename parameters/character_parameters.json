@@ -31,18 +31,21 @@
                 "shift-f-press",
                 "q-press",
                 "shift-q-press"
-            ]
+            ],
+            "cooldown": 2.5
         },
         [
             {
                 "name": "Fire Dash",
                 "description": "Quickly dashes forward leaving a trail of fire",
-                "sneakVariant": false
+                "sneakVariant": false,
+                "cooldown": 2.5
             },
             {
                 "name": "Inferno Shield",
                 "description": "Surrounds self with a barrier of flames, burned attackers",
-                "sneakVariant": true
+                "sneakVariant": true,
+                "cooldown": 1.5
             },
             {
                 "name": "Fireball Barrage",
