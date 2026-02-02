@@ -161,7 +161,8 @@ def createAbilityFiles(datapackParams):
                     lines.append(f"#Kill Thrown Item\nexecute positioned ~ ~1 ~ run kill @n[type=item,nbt={{Item:{{components:{{\"minecraft:custom_data\":{ITEM_CUSTOM_DATA_COMPONENT}}}}}}},distance=..2]")
                 
                 if 'f-press' in slot:
-                    lines.append(f"#Revoke Advancement\nadvancement revoke @s only {datapackParams['namespace']}:{charNamespace}/{nameShortener(ability,type='namespace') if isinstance(ability,str) else nameShortener(ability.get('name'),type='namespace')}/{map[slot]}")
+                    lines.append(f"#Clean up\nadvancement revoke @s only {datapackParams['namespace']}:{charNamespace}/{nameShortener(ability,type='namespace') if isinstance(ability,str) else nameShortener(ability.get('name'),type='namespace')}/{map[slot]}")
+                    lines.append(f"item replace entity @s weapon.offhand with air")
 
                 with open(ability_file_path, 'w') as f:
                     f.write("\n\n".join(lines))
