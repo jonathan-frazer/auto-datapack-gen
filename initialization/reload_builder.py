@@ -1,5 +1,6 @@
 from constants import QPRESS_SCOREBOARD_NAME, RCLICK_SCOREBOARD_NAME, characterParams, charNameTag
 from utils import colorCodeHexGen, nameShortener
+from collections import deque
 
 def reload_file_content(datapackParams):
     def reload_string_gen():
@@ -33,11 +34,25 @@ def reload_file_content(datapackParams):
             if click and drop:
                 break
         
-        lines = [
+        lines = []
+        found = False
+        for i,ability in enumerate(abilities):
+            if isinstance(ability,list):
+                click = True
+                drop = True
+                if not found:
+                    lines.append("#MultiTool Swapping Scores")
+                    found = True
+                lines.append(f"scoreboard objectives add {nameShortener(charNameTag,max_length=8,type='namespace')}{i}Swap dummy")
+        
+        basicLines = [
             f"scoreboard objectives add {RCLICK_SCOREBOARD_NAME} used:warped_fungus_on_a_stick" if click else "",
             f"scoreboard objectives add {QPRESS_SCOREBOARD_NAME} dropped:warped_fungus_on_a_stick" if drop else "",
             f"scoreboard objectives add SelectedSlot dummy"
         ]
+        lines.append("")
+        lines.extend(basicLines)
+
         return "\n".join(lines)
 
 

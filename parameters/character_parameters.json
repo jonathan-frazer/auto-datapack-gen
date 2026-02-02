@@ -1,35 +1,81 @@
 {
     "name": "Blaze The Cat",
     "description": "A fiery feline friend",
-    
     "headTexture": "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjJjODM0MWRmMGI4MmQzNzYxMjBjZjMyMzMyYTI0MjNmMzBhZmRlYTU5Njg5ZjA4Y2U2ODI4OGJiMWRhOGZkZCJ9fX0=",
-    "armor": ["leather","iron","leather"],
-    "color_scheme": ["purple","hot_pink","orange"],
-
-    "effects": ["speed","strength",{"name":"jump_boost","amplifier":2}],
+    "armor": [
+        "leather",
+        "iron",
+        "leather"
+    ],
+    "color_scheme": [
+        "purple",
+        "hot_pink",
+        "orange"
+    ],
+    "effects": [
+        "speed",
+        "strength",
+        {
+            "name": "jump_boost",
+            "amplifier": 2
+        }
+    ],
     "ability_slots": [
         {
             "name": "Blazing Fury",
             "description": "Ignites Enemies",
-            "action_slots": ["r-click","shift-click","f-press","shift-f-press","q-press","shift-q-press"]
+            "action_slots": [
+                "r-click",
+                "shift-click",
+                "f-press",
+                "shift-f-press",
+                "q-press",
+                "shift-q-press"
+            ]
         },
-        {
-            "name": "Fire Dash",
-            "description": "Quickly dashes forward leaving a trail of fire",
-            "action_slots": ["r-click","f-press"]
-        },
-        {
-            "name": "Inferno Shield",
-            "description": "Surrounds self with a barrier of flames, burning attackers",
-            "action_slots": ["r-click","f-press","shift-f-press"]
-        },
+        [
+            {
+                "name": "Fire Dash",
+                "description": "Quickly dashes forward leaving a trail of fire",
+                "sneakVariant": false
+            },
+            {
+                "name": "Inferno Shield",
+                "description": "Surrounds self with a barrier of flames, burned attackers",
+                "sneakVariant": true
+            },
+            {
+                "name": "Fireball Barrage",
+                "description": "Launches a barrage of fireballs that explode on impact",
+                "sneakVariant": false
+            },
+            {
+                "name": "Fiery Frenzy",
+                "description": "Increases speed and strength for a short duration",
+                "sneakVariant": true
+            }
+        ],
         {
             "name": "Ember Flare",
             "description": "Launches fiery projectiles that explode on impact",
-            "action_slots": ["r-click","q-press"]
-        }
+            "action_slots": [
+                "r-click",
+                "q-press"
+            ]
+        },
+        [
+            {
+                "name": "Fire Blitz",
+                "description": "Quickly dashes forward in flame",
+                "sneakVariant": false
+            },
+            {
+                "name": "Inferno Maze",
+                "description": "Create a maze of flames, Burning attackers",
+                "sneakVariant": true
+            }
+        ]
     ],
-
     "crafting_recipe": {
         "minecraft:blaze_rod": 32,
         "minecraft:ender_eye": 2,
@@ -38,11 +84,11 @@
             "potion_contents": "fire_resistance",
             "count": 1
         },
-        "minecraft:fire_charge":32,
+        "minecraft:fire_charge": 32,
         "minecraft:kelp": 32,
         "minecraft:cooked_cod": 10,
         "minecraft:cooked_salmon": 10,
         "minecraft:tropical_fish": 10,
         "minecraft:pufferfish": 1
-    }     
+    }
 }

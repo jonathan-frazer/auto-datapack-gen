@@ -69,6 +69,7 @@ def craft_file_content():
     lines = [
         generate_clearing_string(),
         "\n",
+        "#Spawn Item",
         summon_firework(colors=[(c,brightenHexColor(c,20)) for c in characterParams.get('color_scheme')]),
         craft_item()
     ]

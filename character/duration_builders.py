@@ -43,8 +43,17 @@ def quickEffect_file_content(datapackParams):
 		for i,ability in enumerate(characterParams.get('ability_slots',[{"name":"Ability 1"},{"name":"Ability 2"},{"name":"Ability 3"},{"name":"Ability 4"}])):
 			nameColorIndex = (i//2)%len(colorScheme)
 			loreColorIndex = (nameColorIndex+1)%len(colorScheme)
-			itemCommand = f"item replace entity @s hotbar.{i} with minecraft:warped_fungus_on_a_stick[custom_data={ITEM_CUSTOM_DATA_COMPONENT},item_name={{\"text\":\"{ability if isinstance(ability,str) else ability.get('name')}\",\"color\":\"{colorCodeHexGen(colorScheme[nameColorIndex])}\"}},lore=[{{\"text\":\"{ability.get('description',"Lorem ipsum dolor sit amet")}\",\"color\":\"{colorCodeHexGen(colorScheme[loreColorIndex])}\"}}],custom_model_data={{strings:[\"{nameShortener(ability,type='namespace') if isinstance(ability,str) else nameShortener(ability.get('name',""),type='namespace')}\"]}}] 1"
 
+			if isinstance(ability, list):
+				multiToolLines = []
+				for j,subAbility in enumerate(ability):
+					condition = f"[scores={{{nameShortener(charNameTag,max_length=8,type='namespace')}{i}Swap={j}}}]"
+					itemCommand = f"item replace entity @s hotbar.{i} with minecraft:warped_fungus_on_a_stick[custom_data={ITEM_CUSTOM_DATA_COMPONENT},item_name={{\"text\":\"{subAbility if isinstance(subAbility,str) else subAbility.get('name')}\",\"color\":\"{colorCodeHexGen(colorScheme[nameColorIndex])}\"}},lore=[{{\"text\":\"{subAbility.get('description',"Lorem ipsum dolor sit amet")}\",\"color\":\"{colorCodeHexGen(colorScheme[loreColorIndex])}\"}}],custom_model_data={{strings:[\"{nameShortener(subAbility,type='namespace') if isinstance(subAbility,str) else nameShortener(subAbility.get('name',""),type='namespace')}\"]}}] 1"
+					multiToolLines.append(f"\texecute unless data entity @s{condition} Inventory[{{Slot:{i}b}}] run {itemCommand}\n\texecute if data entity @s{condition} Inventory[{{Slot:{i}b}}].components.\"minecraft:custom_data\".{charNameTag} run {itemCommand}")
+				yield f"\t#Slot {i}\n{"\n".join(multiToolLines)}" 
+				continue
+			
+			itemCommand = f"item replace entity @s hotbar.{i} with minecraft:warped_fungus_on_a_stick[custom_data={ITEM_CUSTOM_DATA_COMPONENT},item_name={{\"text\":\"{ability if isinstance(ability,str) else ability.get('name')}\",\"color\":\"{colorCodeHexGen(colorScheme[nameColorIndex])}\"}},lore=[{{\"text\":\"{ability.get('description',"Lorem ipsum dolor sit amet")}\",\"color\":\"{colorCodeHexGen(colorScheme[loreColorIndex])}\"}}],custom_model_data={{strings:[\"{nameShortener(ability,type='namespace') if isinstance(ability,str) else nameShortener(ability.get('name',""),type='namespace')}\"]}}] 1"
 			yield f"\t#Slot {i}\n\texecute unless data entity @s Inventory[{{Slot:{i}b}}] run {itemCommand}\n\texecute if data entity @s Inventory[{{Slot:{i}b}}].components.\"minecraft:custom_data\".{charNameTag} run {itemCommand}"
 
 	lines = [
@@ -59,6 +68,25 @@ def tick_file_content(datapackParams):
 	def generateInteractDetectors():
 		all_ability_lines = []
 		for i, ability in enumerate(characterParams.get('ability_slots', [{"name": "Ability 1", "action_slots": ["r-click"]}, {"name": "Ability 2", "action_slots": ["r-click"]}, {"name": "Ability 3", "action_slots": ["r-click"]}, {"name": "Ability 4", "action_slots": ["r-click"]}])):
+			if isinstance(ability, list):
+				ability_lines = [
+					f"\t#Slot {i+1}",
+					f"\texecute if score @s[scores={{SelectedSlot={i}}}] {QPRESS_SCOREBOARD_NAME} matches 1..3 run function {datapackParams.get('namespace')}:{charNamespace}/slot_{i}/qpress/0_check"
+				]
+				
+				for j,subAbility in enumerate(ability):
+					ability_lines.append(f"\t\t#{subAbility.get('name',f"SubAbility {j+1}")}")
+					if isinstance(subAbility,dict) and subAbility.get('sneakVariant',False):
+						ability_lines.append(f"\t\texecute if score @s[predicate=!{datapackParams['namespace']}:is_sneaking,scores={{SelectedSlot={i},{nameShortener(charNameTag,max_length=8,type='namespace')}{i}Swap={j}}}] {RCLICK_SCOREBOARD_NAME} matches 1..3 run function {datapackParams.get('namespace')}:{charNamespace}/slot_{i}/{j+1}_{nameShortener(subAbility.get('name',"SubAbility"),max_length=16,type="namespace")}/rclick/0_check")
+						ability_lines.append(f"\t\texecute if score @s[predicate={datapackParams['namespace']}:is_sneaking,scores={{SelectedSlot={i},{nameShortener(charNameTag,max_length=8,type='namespace')}{i}Swap={j}}}] {RCLICK_SCOREBOARD_NAME} matches 1..3 run function {datapackParams.get('namespace')}:{charNamespace}/slot_{i}/{j+1}_{nameShortener(subAbility.get('name',"SubAbility"),max_length=16,type="namespace")}/shiftclick/0_check")
+					else:
+						ability_lines.append(f"\t\texecute if score @s[scores={{SelectedSlot={i},{nameShortener(charNameTag,max_length=8,type='namespace')}{i}Swap={j}}}] {RCLICK_SCOREBOARD_NAME} matches 1..3 run function {datapackParams.get('namespace')}:{charNamespace}/slot_{i}/{j+1}_{nameShortener(subAbility.get('name',"SubAbility"),max_length=16,type="namespace")}/rclick/0_check")
+					ability_lines.append("")
+				ability_lines.append("")
+
+				all_ability_lines.append("\n".join(ability_lines))
+				continue
+
 			ability_lines = [f"\t#Slot {i+1}"]
 			if isinstance(ability, dict):
 				action_slots = ability.get('action_slots',['f-press','q-press','r-click'])[:]
@@ -99,6 +127,10 @@ def tick_file_content(datapackParams):
 	drop = False
 
 	for ability in abilities:
+		if isinstance(ability, list):
+			click = True
+			drop = True
+			break
 		if isinstance(ability,dict):
 			slots = ability.get('action_slots')
 			for slot in slots:
