@@ -28,12 +28,13 @@ def createAdvancementFiles(datapackParams):
           }},
           "equipment": {{
             "offhand": {{
-              "items": "minecraft:warped_fungus_on_a_stick"
+              "items": "minecraft:warped_fungus_on_a_stick",
+                "components": {{
+                "minecraft:custom_data": {{\"{charNameTag}\":1}},
+                "minecraft:custom_model": {{\"strings\":[\"{nameShortener(ability,type='namespace') if isinstance(ability,str) else nameShortener(ability.get('name',""),type='namespace')}\"]}}
+              }}
             }},
-          "components": {{
-            "minecraft:custom_data": {{\"{charNameTag}\":1}},
-            "minecraft:custom_model": {{\"strings\":[\"{nameShortener(ability,type='namespace') if isinstance(ability,str) else nameShortener(ability.get('name',""),type='namespace')}\"]}}
-          }}
+          
           }}
         }}
       }}
@@ -61,12 +62,12 @@ def createAdvancementFiles(datapackParams):
           }},
           "equipment": {{
             "offhand": {{
-              "items": "minecraft:warped_fungus_on_a_stick"
-            }},
-          "components": {{
-            "minecraft:custom_data": {{\"{charNameTag}\":1}},
-            "minecraft:custom_model": {{\"strings\":[\"{nameShortener(ability,type='namespace') if isinstance(ability,str) else nameShortener(ability.get('name',""),type='namespace')}\"]}}
-          }}
+              "items": "minecraft:warped_fungus_on_a_stick",
+              "components": {{
+                "minecraft:custom_data": {{\"{charNameTag}\":1}},
+                "minecraft:custom_model": {{\"strings\":[\"{nameShortener(ability,type='namespace') if isinstance(ability,str) else nameShortener(ability.get('name',""),type='namespace')}\"]}}
+              }}
+            }}
           }}
         }}
       }}
@@ -92,12 +93,12 @@ def createAdvancementFiles(datapackParams):
           }},
           "equipment": {{
             "offhand": {{
-              "items": "minecraft:warped_fungus_on_a_stick"
-            }},
-          "components": {{
-            "minecraft:custom_data": {{\"{charNameTag}\":1}},
-            "minecraft:custom_model": {{\"strings\":[\"{nameShortener(ability,type='namespace') if isinstance(ability,str) else nameShortener(ability.get('name',""),type='namespace')}\"]}}
-          }}
+              "items": "minecraft:warped_fungus_on_a_stick",
+              "components": {{
+                "minecraft:custom_data": {{\"{charNameTag}\":1}},
+                "minecraft:custom_model": {{\"strings\":[\"{nameShortener(ability,type='namespace') if isinstance(ability,str) else nameShortener(ability.get('name',""),type='namespace')}\"]}}
+              }}
+            }}
           }}
         }}
       }}
@@ -125,12 +126,12 @@ def createAdvancementFiles(datapackParams):
           }},
           "equipment": {{
             "offhand": {{
-              "items": "minecraft:warped_fungus_on_a_stick"
-            }},
-          "components": {{
-            "minecraft:custom_data": {{\"{charNameTag}\":1}},
-            "minecraft:custom_model": {{\"strings\":[\"{nameShortener(ability,type='namespace') if isinstance(ability,str) else nameShortener(ability.get('name',""),type='namespace')}\"]}}
-          }}
+              "items": "minecraft:warped_fungus_on_a_stick",
+              "components": {{
+                "minecraft:custom_data": {{\"{charNameTag}\":1}},
+                "minecraft:custom_model": {{\"strings\":[\"{nameShortener(ability,type='namespace') if isinstance(ability,str) else nameShortener(ability.get('name',""),type='namespace')}\"]}}
+              }}
+            }}
           }}
         }}
       }}
