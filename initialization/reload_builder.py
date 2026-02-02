@@ -21,13 +21,15 @@ def reload_file_content(datapackParams):
 		drop = False
 
 		for ability in abilities:
-			if isinstance(ability,dict):
-				action_slot_entries = get_action_slot_entries(ability.get('action_slots', []))
+			if isinstance(ability, dict):
+				action_slot_entries = get_action_slot_entries(ability.get('action_slots') or [])
 				for entry in action_slot_entries:
-					slot = entry['action']
-					if slot in ["r-click","shift-click"]:
+					action = entry.get('action', '')
+					if not action:
+						continue
+					if action in ["r-click", "shift-click"]:
 						click = True
-					if slot in ['q-press','shift-q-press']:
+					if action in ['q-press', 'shift-q-press']:
 						drop = True
 					if click and drop:
 						break
@@ -52,9 +54,9 @@ def reload_file_content(datapackParams):
 						lines.append(f"\tscoreboard objectives add {nameShortener(subAbility.get('name',f"SubAbility{j}"),max_length=12)}{i}CD dummy")
 				continue
 			
-			if isinstance(ability,dict):
-				action_slot_entries = get_action_slot_entries(ability.get('action_slots', []))
-				has_cooldown = any(e.get('cooldown', 0) > 0 for e in action_slot_entries)
+			if isinstance(ability, dict):
+				action_slot_entries = get_action_slot_entries(ability.get('action_slots') or [])
+				has_cooldown = any((e.get('cooldown') or 0) > 0 for e in action_slot_entries)
 				if has_cooldown:
 					lines.append("\t#Cooldowns")
 					lines.append(f"\tscoreboard objectives add {nameShortener(ability.get('name',f"Ability{i}"),max_length=12)}{i}CD dummy")

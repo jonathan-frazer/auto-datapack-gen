@@ -50,9 +50,9 @@ def main_halfsec_file_content(datapackParams):
 						lines.append(f"\texecute as @a[scores={{{nameShortener(subAbility.get('name',f"SubAbility{j}"),max_length=12)}{i}CD=..-1}}] run scoreboard players set @s {nameShortener(subAbility.get('name',f"SubAbility{j}"),max_length=12)}{i}CD 0")
 				continue
 			
-			if isinstance(ability,dict):
-				action_slot_entries = get_action_slot_entries(ability.get('action_slots', []))
-				has_cooldown = any(e.get('cooldown', 0) > 0 for e in action_slot_entries)
+			if isinstance(ability, dict):
+				action_slot_entries = get_action_slot_entries(ability.get('action_slots') or [])
+				has_cooldown = any((e.get('cooldown') or 0) > 0 for e in action_slot_entries)
 				if has_cooldown:
 					if not found:
 						lines.appendleft("#Decrement Cooldowns")
