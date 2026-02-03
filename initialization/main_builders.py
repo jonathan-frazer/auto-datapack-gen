@@ -65,13 +65,15 @@ def main_halfsec_file_content(datapackParams):
 	lines = [
 		"# Runs Every Half Second",
 		generate_crafting_string(),
-		"\n# Activation/Deactivation Check",
+		"",
+		"# Activation/Deactivation Check",
 		f"execute as @a[tag=!{charNameTag},predicate={datapackParams['namespace']}:{charNamespace}/wearing_head] at @s run function {datapackParams['namespace']}:{charNamespace}/activate",
 		f"execute as @a[tag={charNameTag},predicate=!{datapackParams['namespace']}:{charNamespace}/wearing_head] at @s run function {datapackParams['namespace']}:{charNamespace}/deactivate",
-		"\n# Effects",
-		f"execute as @a[tag={charNameTag}] run function {datapackParams['namespace']}:{charNamespace}/quick_effect",
 		"",
-		decrementCooldowns()
+		decrementCooldowns(),
+		"",
+		"# Effects",
+		f"execute as @a[tag={charNameTag}] run function {datapackParams['namespace']}:{charNamespace}/quick_effect"		
 	]
 	lines.append(f"\nkill @e[type=item,nbt={{Item:{{components:{{\"minecraft:custom_data\":{ITEM_CUSTOM_DATA_COMPONENT}}}}}}}]")
 	lines.append(f"\nschedule function {datapackParams['namespace']}:main_halfsec 10t")
