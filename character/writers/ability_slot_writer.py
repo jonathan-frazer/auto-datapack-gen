@@ -178,7 +178,7 @@ def createAbilityFiles(datapackParams):
 											"",
 											"#Check Slot Number(and Arbitrary Cooldown)",
 											f"execute if score @s SelectedSlot matches {i} {f"if score @s {nameShortener(ability.get('name',f"Ability{j}"),max_length=12)}{i}CD matches 0 " if 'cooldown' in ability else ""}run function {datapackParams['namespace']}:{charNamespace}/slot_{i}/cycle",
-											f"advancement revoke @s[advancements={{{datapackParams['namespace']}:{charNamespace}/slot_{i}/fpress=true}}] only {datapackParams['namespace']}:{charNamespace}/slot_{i}/fpress"
+											f"advancement revoke @s only {datapackParams['namespace']}:{charNamespace}/slot_{i}/fpress"
 										]
 						os.makedirs(os.path.dirname(fpress_path), exist_ok=True)
 						with open(fpress_path, 'w') as f:
@@ -213,9 +213,6 @@ def createAbilityFiles(datapackParams):
 										f"#Q-Press Logic",
 										f"execute if entity @s[advancements={{{datapackParams['namespace']}:{charNamespace}/slot_{i}/fpress=false}}] run scoreboard players remove @s {nameShortener(charNameTag,max_length=8)}{i}Swap 1",
 										f"scoreboard players set @s[scores={{{nameShortener(charNameTag,max_length=8)}{i}Swap=..-1}}] {nameShortener(charNameTag,max_length=8)}{i}Swap {len(ability)-1}",
-										"",
-										"#Revoke Advancement",
-										f"advancement revoke @s[advancements={{{datapackParams['namespace']}:{charNamespace}/slot_{i}/fpress=true}}] only {datapackParams['namespace']}:{charNamespace}/slot_{i}/fpress",
 										"",
 										"#Item Replacment"
 									]
