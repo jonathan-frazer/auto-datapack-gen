@@ -3,12 +3,12 @@ from ..transformation_builders import activate_file_content, deactivate_file_con
 from constants import charNamespace
 
 
-def _write_function(datapackParams, filename, content):
+def _write_function(packParams, filename, content):
     file_path = os.path.join(
-        os.getenv("DATAPACKS_PATH"),
-        datapackParams["pack_name"],
+        os.getenv("DATAPACK_PATH"),
+        packParams["pack_name"],
         "data",
-        datapackParams["namespace"],
+        packParams["namespace"],
         "function",
         charNamespace,
         filename,
@@ -18,9 +18,9 @@ def _write_function(datapackParams, filename, content):
         f.write(content)
 
 
-def writeActivationFunction(datapackParams):
-    _write_function(datapackParams, "activate.mcfunction", activate_file_content(datapackParams))
+def writeActivationFunction(packParams):
+    _write_function(packParams, "activate.mcfunction", activate_file_content(packParams))
 
 
-def writeDeactivationFunction(datapackParams):
-    _write_function(datapackParams, "deactivate.mcfunction", deactivate_file_content(datapackParams))
+def writeDeactivationFunction(packParams):
+    _write_function(packParams, "deactivate.mcfunction", deactivate_file_content(packParams))

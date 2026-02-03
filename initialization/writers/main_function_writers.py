@@ -2,12 +2,12 @@ import os
 from ..main_builders import main_file_content, main_halfsec_file_content, main_sec_file_content
 
 
-def _write(datapackParams, filename, content):
+def _write(packParams, filename, content):
     file_path = os.path.join(
-        os.getenv("DATAPACKS_PATH"),
-        datapackParams["pack_name"],
+        os.getenv("DATAPACK_PATH"),
+        packParams["pack_name"],
         "data",
-        datapackParams["namespace"],
+        packParams["namespace"],
         "function",
         filename,
     )
@@ -16,13 +16,13 @@ def _write(datapackParams, filename, content):
         f.write(content)
 
 
-def writeMainFile(datapackParams):
-    _write(datapackParams, "main.mcfunction", main_file_content(datapackParams))
+def writeMainFile(packParams):
+    _write(packParams, "main.mcfunction", main_file_content(packParams))
 
 
-def writeMainHalfSecFile(datapackParams):
-    _write(datapackParams, "main_halfsec.mcfunction", main_halfsec_file_content(datapackParams))
+def writeMainHalfSecFile(packParams):
+    _write(packParams, "main_halfsec.mcfunction", main_halfsec_file_content(packParams))
 
 
-def writeMainSecFile(datapackParams):
-    _write(datapackParams, "main_sec.mcfunction", main_sec_file_content(datapackParams))
+def writeMainSecFile(packParams):
+    _write(packParams, "main_sec.mcfunction", main_sec_file_content(packParams))

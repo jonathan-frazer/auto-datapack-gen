@@ -2,7 +2,7 @@ from constants import QPRESS_SCOREBOARD_NAME, RCLICK_SCOREBOARD_NAME, charNamesp
 from utils import nameShortener, get_action_slot_entries
 
 
-def tick_file_content(datapackParams):
+def tick_file_content(packParams):
     def generate_interact_detectors():
         all_ability_lines = []
         abilities = characterParams.get(
@@ -19,21 +19,21 @@ def tick_file_content(datapackParams):
             if isinstance(ability, list):
                 ability_lines = [
                     f"\t#Slot {i+1}",
-                    f"\texecute if score @s[scores={{SelectedSlot={i}}}] {QPRESS_SCOREBOARD_NAME} matches 1..3 run function {datapackParams.get('namespace')}:{charNamespace}/slot_{i}/qpress/0_check",
+                    f"\texecute if score @s[scores={{SelectedSlot={i}}}] {QPRESS_SCOREBOARD_NAME} matches 1..3 run function {packParams.get('namespace')}:{charNamespace}/slot_{i}/qpress/0_check",
                 ]
 
                 for j, sub_ability in enumerate(ability):
                     ability_lines.append(f"\t\t#{sub_ability.get('name', f'SubAbility {j+1}')}")
                     if isinstance(sub_ability, dict) and sub_ability.get("sneakCooldown", 0):
                         ability_lines.append(
-                            f"\t\texecute if score @s[predicate=!{datapackParams['namespace']}:is_sneaking,scores={{SelectedSlot={i},{nameShortener(charNameTag, max_length=8)}{i}Swap={j}}}] {RCLICK_SCOREBOARD_NAME} matches 1..3 run function {datapackParams.get('namespace')}:{charNamespace}/slot_{i}/{j+1}_{nameShortener(sub_ability.get('name', 'SubAbility'), max_length=16, type='namespace')}/rclick/0_check"
+                            f"\t\texecute if score @s[predicate=!{packParams['namespace']}:is_sneaking,scores={{SelectedSlot={i},{nameShortener(charNameTag, max_length=8)}{i}Swap={j}}}] {RCLICK_SCOREBOARD_NAME} matches 1..3 run function {packParams.get('namespace')}:{charNamespace}/slot_{i}/{j+1}_{nameShortener(sub_ability.get('name', 'SubAbility'), max_length=16, type='namespace')}/rclick/0_check"
                         )
                         ability_lines.append(
-                            f"\t\texecute if score @s[predicate={datapackParams['namespace']}:is_sneaking,scores={{SelectedSlot={i},{nameShortener(charNameTag, max_length=8)}{i}Swap={j}}}] {RCLICK_SCOREBOARD_NAME} matches 1..3 run function {datapackParams.get('namespace')}:{charNamespace}/slot_{i}/{j+1}_{nameShortener(sub_ability.get('name', 'SubAbility'), max_length=16, type='namespace')}/shiftclick/0_check"
+                            f"\t\texecute if score @s[predicate={packParams['namespace']}:is_sneaking,scores={{SelectedSlot={i},{nameShortener(charNameTag, max_length=8)}{i}Swap={j}}}] {RCLICK_SCOREBOARD_NAME} matches 1..3 run function {packParams.get('namespace')}:{charNamespace}/slot_{i}/{j+1}_{nameShortener(sub_ability.get('name', 'SubAbility'), max_length=16, type='namespace')}/shiftclick/0_check"
                         )
                     else:
                         ability_lines.append(
-                            f"\t\texecute if score @s[scores={{SelectedSlot={i},{nameShortener(charNameTag, max_length=8)}{i}Swap={j}}}] {RCLICK_SCOREBOARD_NAME} matches 1..3 run function {datapackParams.get('namespace')}:{charNamespace}/slot_{i}/{j+1}_{nameShortener(sub_ability.get('name', 'SubAbility'), max_length=16, type='namespace')}/rclick/0_check"
+                            f"\t\texecute if score @s[scores={{SelectedSlot={i},{nameShortener(charNameTag, max_length=8)}{i}Swap={j}}}] {RCLICK_SCOREBOARD_NAME} matches 1..3 run function {packParams.get('namespace')}:{charNamespace}/slot_{i}/{j+1}_{nameShortener(sub_ability.get('name', 'SubAbility'), max_length=16, type='namespace')}/rclick/0_check"
                         )
                     ability_lines.append("")
                 ability_lines.append("")
@@ -55,35 +55,35 @@ def tick_file_content(datapackParams):
                 if "r-click" in slot_names:
                     if "shift-click" not in slot_names:
                         ability_lines.append(
-                            f"\texecute if score @s[scores={{SelectedSlot={i}}}] {RCLICK_SCOREBOARD_NAME} matches 1..3 run function {datapackParams.get('namespace')}:{charNamespace}/slot_{i}/rclick/0_check"
+                            f"\texecute if score @s[scores={{SelectedSlot={i}}}] {RCLICK_SCOREBOARD_NAME} matches 1..3 run function {packParams.get('namespace')}:{charNamespace}/slot_{i}/rclick/0_check"
                         )
                     else:
                         ability_lines.append(
-                            f"\texecute if score @s[scores={{SelectedSlot={i}}},predicate=!{datapackParams.get('namespace')}:is_sneaking] {RCLICK_SCOREBOARD_NAME} matches 1..3 run function {datapackParams.get('namespace')}:{charNamespace}/slot_{i}/rclick/0_check"
+                            f"\texecute if score @s[scores={{SelectedSlot={i}}},predicate=!{packParams.get('namespace')}:is_sneaking] {RCLICK_SCOREBOARD_NAME} matches 1..3 run function {packParams.get('namespace')}:{charNamespace}/slot_{i}/rclick/0_check"
                         )
                         ability_lines.append(
-                            f"\texecute if score @s[scores={{SelectedSlot={i}}},predicate={datapackParams.get('namespace')}:is_sneaking] {RCLICK_SCOREBOARD_NAME} matches 1..3 run function {datapackParams.get('namespace')}:{charNamespace}/slot_{i}/shiftclick/0_check"
+                            f"\texecute if score @s[scores={{SelectedSlot={i}}},predicate={packParams.get('namespace')}:is_sneaking] {RCLICK_SCOREBOARD_NAME} matches 1..3 run function {packParams.get('namespace')}:{charNamespace}/slot_{i}/shiftclick/0_check"
                         )
                 elif "shift-click" in slot_names:
                     ability_lines.append(
-                        f"\texecute if score @s[scores={{SelectedSlot={i}}},predicate={datapackParams.get('namespace')}:is_sneaking] {RCLICK_SCOREBOARD_NAME} matches 1..3 run function {datapackParams.get('namespace')}:{charNamespace}/slot_{i}/shiftclick/0_check"
+                        f"\texecute if score @s[scores={{SelectedSlot={i}}},predicate={packParams.get('namespace')}:is_sneaking] {RCLICK_SCOREBOARD_NAME} matches 1..3 run function {packParams.get('namespace')}:{charNamespace}/slot_{i}/shiftclick/0_check"
                     )
 
                 if "q-press" in slot_names:
                     if "shift-q-press" not in slot_names:
                         ability_lines.append(
-                            f"\texecute if score @s[scores={{SelectedSlot={i}}}] {QPRESS_SCOREBOARD_NAME} matches 1..3 run function {datapackParams.get('namespace')}:{charNamespace}/slot_{i}/qpress/0_check"
+                            f"\texecute if score @s[scores={{SelectedSlot={i}}}] {QPRESS_SCOREBOARD_NAME} matches 1..3 run function {packParams.get('namespace')}:{charNamespace}/slot_{i}/qpress/0_check"
                         )
                     else:
                         ability_lines.append(
-                            f"\texecute if score @s[scores={{SelectedSlot={i}}},predicate=!{datapackParams.get('namespace')}:is_sneaking] {QPRESS_SCOREBOARD_NAME} matches 1..3 run function {datapackParams.get('namespace')}:{charNamespace}/slot_{i}/qpress/0_check"
+                            f"\texecute if score @s[scores={{SelectedSlot={i}}},predicate=!{packParams.get('namespace')}:is_sneaking] {QPRESS_SCOREBOARD_NAME} matches 1..3 run function {packParams.get('namespace')}:{charNamespace}/slot_{i}/qpress/0_check"
                         )
                         ability_lines.append(
-                            f"\texecute if score @s[scores={{SelectedSlot={i}}},predicate={datapackParams.get('namespace')}:is_sneaking] {QPRESS_SCOREBOARD_NAME} matches 1..3 run function {datapackParams.get('namespace')}:{charNamespace}/slot_{i}/shift_qpress/0_check"
+                            f"\texecute if score @s[scores={{SelectedSlot={i}}},predicate={packParams.get('namespace')}:is_sneaking] {QPRESS_SCOREBOARD_NAME} matches 1..3 run function {packParams.get('namespace')}:{charNamespace}/slot_{i}/shift_qpress/0_check"
                         )
                 elif "shift-q-press" in slot_names:
                     ability_lines.append(
-                        f"\texecute if score @s[scores={{SelectedSlot={i}}},predicate={datapackParams.get('namespace')}:is_sneaking] {QPRESS_SCOREBOARD_NAME} matches 1..3 run function {datapackParams.get('namespace')}:{charNamespace}/slot_{i}/shift_qpress/0_check"
+                        f"\texecute if score @s[scores={{SelectedSlot={i}}},predicate={packParams.get('namespace')}:is_sneaking] {QPRESS_SCOREBOARD_NAME} matches 1..3 run function {packParams.get('namespace')}:{charNamespace}/slot_{i}/shift_qpress/0_check"
                     )
 
             all_ability_lines.append("\n".join(ability_lines))

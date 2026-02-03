@@ -12,7 +12,7 @@ venv/
 .vscode/
 .idea/
 
-# Datapack output (assuming DATAPACKS_PATH is outside the repo, but just in case)
+# Datapack output (assuming DATAPACK_PATH is outside the repo, but just in case)
 *.zip
 
 # Operating System files

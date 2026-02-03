@@ -2,9 +2,9 @@ from constants import QPRESS_SCOREBOARD_NAME, RCLICK_SCOREBOARD_NAME, characterP
 from utils import colorCodeHexGen, nameShortener, get_action_slot_entries, ultimate_scoreboard_name
 
 
-def reload_file_content(datapackParams):
+def reload_file_content(packParams):
     def format_load_message():
-        message = datapackParams.get("load_msg", "Datapack Loaded!")
+        message = packParams.get("load_msg", "Datapack Loaded!")
         color_scheme = characterParams.get("color_scheme", ["white"])
         words = message.split()
         formatted = []
@@ -87,8 +87,8 @@ def reload_file_content(datapackParams):
         "\n".join(scoreboard_lines),
         "",
         "#Schedule Functions",
-        f"schedule function {datapackParams['namespace']}:main_sec 1t",
-        f"schedule function {datapackParams['namespace']}:main_halfsec 1t",
+        f"schedule function {packParams['namespace']}:main_sec 1t",
+        f"schedule function {packParams['namespace']}:main_halfsec 1t",
     ]
 
     return "\n".join(lines)

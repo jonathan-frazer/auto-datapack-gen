@@ -3,12 +3,12 @@ from ..craft_builder import craft_file_content
 from constants import charNamespace
 
 
-def writeCraftFile(datapackParams):
+def writeCraftFile(packParams):
     craft_file_path = os.path.join(
-        os.getenv("DATAPACKS_PATH"),
-        datapackParams["pack_name"],
+        os.getenv("DATAPACK_PATH"),
+        packParams["pack_name"],
         "data",
-        datapackParams["namespace"],
+        packParams["namespace"],
         "function",
         f"craft_{charNamespace}.mcfunction",
     )

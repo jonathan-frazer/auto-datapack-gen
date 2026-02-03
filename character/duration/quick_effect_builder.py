@@ -3,11 +3,11 @@ from utils import nameShortener, get_action_slot_entries, ultimate_scoreboard_na
 from .duration_utils import item_command
 
 
-def quickEffect_file_content(datapackParams):
+def quickEffect_file_content(packParams):
     def ability_display(ability, fallback):
         return ability.get("name", fallback) if isinstance(ability, dict) else str(ability)
 
-    def ability_desc(ability, fallback="Lorem ipsum dolor sit amet"):
+    def ability_desc(ability, fallback=""):
         return ability.get("description", fallback) if isinstance(ability, dict) else fallback
 
     def ability_model(ability, fallback):

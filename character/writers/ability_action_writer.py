@@ -10,12 +10,12 @@ from .ability_utils import (
 )
 
 
-def _write_list_cycle_files(datapackParams, slot_index, ability_list, color_scheme, name_color, lore_color):
+def _write_list_cycle_files(packParams, slot_index, ability_list, color_scheme, name_color, lore_color):
     fpress_path = os.path.join(
-        os.getenv("DATAPACKS_PATH"),
-        datapackParams["pack_name"],
+        os.getenv("DATAPACK_PATH"),
+        packParams["pack_name"],
         "data",
-        datapackParams["namespace"],
+        packParams["namespace"],
         "function",
         charNamespace,
         f"slot_{slot_index}",
@@ -29,16 +29,16 @@ def _write_list_cycle_files(datapackParams, slot_index, ability_list, color_sche
         "execute unless data entity @s SelectedItem run item replace entity @s weapon.offhand with minecraft:air",
         "",
         "#Check Slot Number(and Arbitrary Cooldown)",
-        f"execute if score @s SelectedSlot matches {slot_index} run function {datapackParams['namespace']}:{charNamespace}/slot_{slot_index}/cycle",
-        f"advancement revoke @s only {datapackParams['namespace']}:{charNamespace}/slot_{slot_index}/fpress",
+        f"execute if score @s SelectedSlot matches {slot_index} run function {packParams['namespace']}:{charNamespace}/slot_{slot_index}/cycle",
+        f"advancement revoke @s only {packParams['namespace']}:{charNamespace}/slot_{slot_index}/fpress",
     ]
     write_file(fpress_path, "\n".join(fpress_lines))
 
     qpress_path = os.path.join(
-        os.getenv("DATAPACKS_PATH"),
-        datapackParams["pack_name"],
+        os.getenv("DATAPACK_PATH"),
+        packParams["pack_name"],
         "data",
-        datapackParams["namespace"],
+        packParams["namespace"],
         "function",
         charNamespace,
         f"slot_{slot_index}",
@@ -50,15 +50,15 @@ def _write_list_cycle_files(datapackParams, slot_index, ability_list, color_sche
         f"execute positioned ~ ~1 ~ run kill @n[type=item,nbt={{Item:{{components:{{\"minecraft:custom_data\":{ITEM_CUSTOM_DATA_COMPONENT}}}}}}},distance=..2]",
         "",
         "#Perform Arbitrary Cooldown Check here",
-        f"function {datapackParams['namespace']}:{charNamespace}/slot_{slot_index}/cycle",
+        f"function {packParams['namespace']}:{charNamespace}/slot_{slot_index}/cycle",
     ]
     write_file(qpress_path, "\n".join(qpress_lines))
 
     cycle_path = os.path.join(
-        os.getenv("DATAPACKS_PATH"),
-        datapackParams["pack_name"],
+        os.getenv("DATAPACK_PATH"),
+        packParams["pack_name"],
         "data",
-        datapackParams["namespace"],
+        packParams["namespace"],
         "function",
         charNamespace,
         f"slot_{slot_index}",
@@ -66,11 +66,11 @@ def _write_list_cycle_files(datapackParams, slot_index, ability_list, color_sche
     )
     logic_lines = [
         "#F-Press Logic",
-        f"execute if entity @s[advancements={{{datapackParams['namespace']}:{charNamespace}/slot_{slot_index}/fpress=true}}] run scoreboard players add @s {nameShortener(charNameTag, max_length=8)}{slot_index}Swap 1",
+        f"execute if entity @s[advancements={{{packParams['namespace']}:{charNamespace}/slot_{slot_index}/fpress=true}}] run scoreboard players add @s {nameShortener(charNameTag, max_length=8)}{slot_index}Swap 1",
         f"scoreboard players set @s[scores={{{nameShortener(charNameTag, max_length=8)}{slot_index}Swap={len(ability_list)}..}}] {nameShortener(charNameTag, max_length=8)}{slot_index}Swap 0",
         "",
         "#Q-Press Logic",
-        f"execute if entity @s[advancements={{{datapackParams['namespace']}:{charNamespace}/slot_{slot_index}/fpress=false}}] run scoreboard players remove @s {nameShortener(charNameTag, max_length=8)}{slot_index}Swap 1",
+        f"execute if entity @s[advancements={{{packParams['namespace']}:{charNamespace}/slot_{slot_index}/fpress=false}}] run scoreboard players remove @s {nameShortener(charNameTag, max_length=8)}{slot_index}Swap 1",
         f"scoreboard players set @s[scores={{{nameShortener(charNameTag, max_length=8)}{slot_index}Swap=..-1}}] {nameShortener(charNameTag, max_length=8)}{slot_index}Swap {len(ability_list) - 1}",
         "",
         "#Item Replacment",
@@ -125,13 +125,13 @@ def _write_list_cycle_files(datapackParams, slot_index, ability_list, color_sche
             ]
             check_lines = [
                 "#Perform Arbitrary Cooldown Check here",
-                f"execute if score @s {nameShortener(name, max_length=12)}{slot_index}CD matches 0 run function {datapackParams['namespace']}:{charNamespace}/slot_{slot_index}/{j+1}_{model}/shiftclick/0_init",
+                f"execute if score @s {nameShortener(name, max_length=12)}{slot_index}CD matches 0 run function {packParams['namespace']}:{charNamespace}/slot_{slot_index}/{j+1}_{model}/shiftclick/0_init",
             ]
             sub_path = os.path.join(
-                os.getenv("DATAPACKS_PATH"),
-                datapackParams["pack_name"],
+                os.getenv("DATAPACK_PATH"),
+                packParams["pack_name"],
                 "data",
-                datapackParams["namespace"],
+                packParams["namespace"],
                 "function",
                 charNamespace,
                 f"slot_{slot_index}",
@@ -153,13 +153,13 @@ def _write_list_cycle_files(datapackParams, slot_index, ability_list, color_sche
         ]
         check_lines = [
             "#Perform Arbitrary Cooldown Check here",
-            f"{f'execute if score @s {nameShortener(name, max_length=12)}{slot_index}CD matches 0 run ' if cooldown > 0 else ''}function {datapackParams['namespace']}:{charNamespace}/slot_{slot_index}/{j+1}_{model}/rclick/0_init",
+            f"{f'execute if score @s {nameShortener(name, max_length=12)}{slot_index}CD matches 0 run ' if cooldown > 0 else ''}function {packParams['namespace']}:{charNamespace}/slot_{slot_index}/{j+1}_{model}/rclick/0_init",
         ]
         sub_path = os.path.join(
-            os.getenv("DATAPACKS_PATH"),
-            datapackParams["pack_name"],
+            os.getenv("DATAPACK_PATH"),
+            packParams["pack_name"],
             "data",
-            datapackParams["namespace"],
+            packParams["namespace"],
             "function",
             charNamespace,
             f"slot_{slot_index}",
@@ -171,7 +171,7 @@ def _write_list_cycle_files(datapackParams, slot_index, ability_list, color_sche
         write_file(sub_path, "\n\n".join(lines))
 
 
-def _write_ultimate_files(datapackParams, slot_index, ability, color_scheme, name_color, lore_color):
+def _write_ultimate_files(packParams, slot_index, ability, color_scheme, name_color, lore_color):
     ult_score = ultimate_scoreboard_name(ability_name(ability, f"Ability{slot_index}"), slot_index)
     name = ability_name(ability, f"Ability{slot_index}")
     desc = ability_desc(ability)
@@ -180,10 +180,10 @@ def _write_ultimate_files(datapackParams, slot_index, ability, color_scheme, nam
     glint_item = item_command(slot_index, name, desc, model, color_scheme[name_color], color_scheme[lore_color], glint=True)
 
     fpress_path = os.path.join(
-        os.getenv("DATAPACKS_PATH"),
-        datapackParams["pack_name"],
+        os.getenv("DATAPACK_PATH"),
+        packParams["pack_name"],
         "data",
-        datapackParams["namespace"],
+        packParams["namespace"],
         "function",
         charNamespace,
         f"slot_{slot_index}",
@@ -192,7 +192,7 @@ def _write_ultimate_files(datapackParams, slot_index, ability, color_scheme, nam
     )
     fpress_lines = [
         "#Clean up",
-        f"advancement revoke @s only {datapackParams['namespace']}:{charNamespace}/{ability_namespace(ability, f'Ability{slot_index}')}/fpress",
+        f"advancement revoke @s only {packParams['namespace']}:{charNamespace}/{ability_namespace(ability, f'Ability{slot_index}')}/fpress",
         f"execute if data entity @s SelectedItem.components.\"minecraft:custom_data\".{charNameTag} run item replace entity @s weapon.mainhand with minecraft:air",
         "execute if data entity @s SelectedItem run item replace entity @s weapon.offhand from entity @s weapon.mainhand",
         "execute unless data entity @s SelectedItem run item replace entity @s weapon.offhand with minecraft:air",
@@ -204,10 +204,10 @@ def _write_ultimate_files(datapackParams, slot_index, ability, color_scheme, nam
     write_file(fpress_path, "\n".join(fpress_lines))
 
     qpress_path = os.path.join(
-        os.getenv("DATAPACKS_PATH"),
-        datapackParams["pack_name"],
+        os.getenv("DATAPACK_PATH"),
+        packParams["pack_name"],
         "data",
-        datapackParams["namespace"],
+        packParams["namespace"],
         "function",
         charNamespace,
         f"slot_{slot_index}",
@@ -225,10 +225,10 @@ def _write_ultimate_files(datapackParams, slot_index, ability, color_scheme, nam
     write_file(qpress_path, "\n".join(qpress_lines))
 
     rclick_path = os.path.join(
-        os.getenv("DATAPACKS_PATH"),
-        datapackParams["pack_name"],
+        os.getenv("DATAPACK_PATH"),
+        packParams["pack_name"],
         "data",
-        datapackParams["namespace"],
+        packParams["namespace"],
         "function",
         charNamespace,
         f"slot_{slot_index}",
@@ -237,7 +237,7 @@ def _write_ultimate_files(datapackParams, slot_index, ability, color_scheme, nam
     )
     write_file(
         os.path.join(os.path.dirname(rclick_path), "0_check.mcfunction"),
-        f"execute if score @s {ult_score} matches 100.. run function {datapackParams['namespace']}:{charNamespace}/slot_{slot_index}/rclick/0_init",
+        f"execute if score @s {ult_score} matches 100.. run function {packParams['namespace']}:{charNamespace}/slot_{slot_index}/rclick/0_init",
     )
     write_file(
         rclick_path,
@@ -251,7 +251,7 @@ def _write_ultimate_files(datapackParams, slot_index, ability, color_scheme, nam
     )
 
 
-def createAbilityFiles(datapackParams):
+def createAbilityFiles(packParams):
     action_map = {
         "r-click": "rclick",
         "q-press": "qpress",
@@ -276,11 +276,11 @@ def createAbilityFiles(datapackParams):
         lore_color = (name_color + 1) % len(color_scheme)
 
         if isinstance(ability, list):
-            _write_list_cycle_files(datapackParams, i, ability, color_scheme, name_color, lore_color)
+            _write_list_cycle_files(packParams, i, ability, color_scheme, name_color, lore_color)
             continue
 
         if isinstance(ability, dict) and ability.get("ultimate"):
-            _write_ultimate_files(datapackParams, i, ability, color_scheme, name_color, lore_color)
+            _write_ultimate_files(packParams, i, ability, color_scheme, name_color, lore_color)
             continue
 
         if isinstance(ability, dict):
@@ -314,10 +314,10 @@ def createAbilityFiles(datapackParams):
 
                 slot = slot.replace("NULL", "")
                 ability_file_path = os.path.join(
-                    os.getenv("DATAPACKS_PATH"),
-                    datapackParams["pack_name"],
+                    os.getenv("DATAPACK_PATH"),
+                    packParams["pack_name"],
                     "data",
-                    datapackParams["namespace"],
+                    packParams["namespace"],
                     "function",
                     charNamespace,
                     f"slot_{i}",
@@ -328,7 +328,7 @@ def createAbilityFiles(datapackParams):
                 if "click" in slot:
                     check_lines = [
                         "#Perform Arbitrary Cooldown Check here",
-                        f"{f'execute if score @s {nameShortener(name, max_length=12)}{i}CD matches 0 run ' if current_cd > 0 else ''}function {datapackParams['namespace']}:{charNamespace}/slot_{i}/{action_map[slot]}/0_init",
+                        f"{f'execute if score @s {nameShortener(name, max_length=12)}{i}CD matches 0 run ' if current_cd > 0 else ''}function {packParams['namespace']}:{charNamespace}/slot_{i}/{action_map[slot]}/0_init",
                     ]
                     write_file(os.path.join(os.path.dirname(ability_file_path), "0_check.mcfunction"), "\n".join(check_lines))
 
@@ -346,7 +346,7 @@ def createAbilityFiles(datapackParams):
                             f"execute unless score @s {cd_name}{i}CD matches 0 run {glint_item}",
                             "",
                             "#Perform Arbitrary Cooldown Check here",
-                            f"execute if score @s {cd_name}{i}CD matches 0 run function {datapackParams['namespace']}:{charNamespace}/slot_{i}/{action_map[slot]}/0_init",
+                            f"execute if score @s {cd_name}{i}CD matches 0 run function {packParams['namespace']}:{charNamespace}/slot_{i}/{action_map[slot]}/0_init",
                         ]
                     else:
                         check_lines = [
@@ -355,7 +355,7 @@ def createAbilityFiles(datapackParams):
                             base_item,
                             "",
                             "#Perform Arbitrary Cooldown Check here",
-                            f"function {datapackParams['namespace']}:{charNamespace}/slot_{i}/{action_map[slot]}/0_init",
+                            f"function {packParams['namespace']}:{charNamespace}/slot_{i}/{action_map[slot]}/0_init",
                         ]
                     write_file(os.path.join(os.path.dirname(ability_file_path), "0_check.mcfunction"), "\n".join(check_lines))
 
@@ -369,7 +369,7 @@ def createAbilityFiles(datapackParams):
                         )
                         check_lines = [
                             "#Clean up",
-                            f"advancement revoke @s only {datapackParams['namespace']}:{charNamespace}/{adv_name}/{action_map[slot]}",
+                            f"advancement revoke @s only {packParams['namespace']}:{charNamespace}/{adv_name}/{action_map[slot]}",
                             f"execute if data entity @s SelectedItem.components.\"minecraft:custom_data\".{charNameTag} run item replace entity @s weapon.mainhand with minecraft:air",
                             "execute if data entity @s SelectedItem run item replace entity @s weapon.offhand from entity @s weapon.mainhand",
                             "execute unless data entity @s SelectedItem run item replace entity @s weapon.offhand with minecraft:air",
@@ -377,19 +377,19 @@ def createAbilityFiles(datapackParams):
                             f"execute unless score @s {cd_name}{i}CD matches 0 run {glint_item}",
                             "",
                             "#Check Slot Number(and Arbitrary Cooldown)",
-                            f"execute if score @s SelectedSlot matches {i} if score @s {cd_name}{i}CD matches 0 run function {datapackParams['namespace']}:{charNamespace}/slot_{i}/{action_map[slot]}/0_init",
+                            f"execute if score @s SelectedSlot matches {i} if score @s {cd_name}{i}CD matches 0 run function {packParams['namespace']}:{charNamespace}/slot_{i}/{action_map[slot]}/0_init",
                         ]
                     else:
                         check_lines = [
                             "#Clean up",
-                            f"advancement revoke @s only {datapackParams['namespace']}:{charNamespace}/{adv_name}/{action_map[slot]}",
+                            f"advancement revoke @s only {packParams['namespace']}:{charNamespace}/{adv_name}/{action_map[slot]}",
                             f"execute if data entity @s SelectedItem.components.\"minecraft:custom_data\".{charNameTag} run item replace entity @s weapon.mainhand with minecraft:air",
                             "execute if data entity @s SelectedItem run item replace entity @s weapon.offhand from entity @s weapon.mainhand",
                             "execute unless data entity @s SelectedItem run item replace entity @s weapon.offhand with minecraft:air",
                             base_item,
                             "",
                             "#Check Slot Number(and Arbitrary Cooldown)",
-                            f"execute if score @s SelectedSlot matches {i} run function {datapackParams['namespace']}:{charNamespace}/slot_{i}/{action_map[slot]}/0_init",
+                            f"execute if score @s SelectedSlot matches {i} run function {packParams['namespace']}:{charNamespace}/slot_{i}/{action_map[slot]}/0_init",
                         ]
                     write_file(os.path.join(os.path.dirname(ability_file_path), "0_check.mcfunction"), "\n".join(check_lines))
 

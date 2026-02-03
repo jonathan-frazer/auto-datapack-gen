@@ -2,10 +2,10 @@ import os
 import json
 
 
-def writeFunctionTags(datapackParams):
+def writeFunctionTags(packParams):
     base_path = os.path.join(
-        os.getenv("DATAPACKS_PATH"),
-        datapackParams["pack_name"],
+        os.getenv("DATAPACK_PATH"),
+        packParams["pack_name"],
         "data",
         "minecraft",
         "tags",
@@ -17,5 +17,5 @@ def writeFunctionTags(datapackParams):
     main_tag_file_path = os.path.join(base_path, "tick.json")
 
     with open(load_tag_file_path, "w") as f_load, open(main_tag_file_path, "w") as f_main:
-        f_load.write(json.dumps({"values": [f"{datapackParams['namespace']}:reload"]}, indent=4))
-        f_main.write(json.dumps({"values": [f"{datapackParams['namespace']}:main"]}, indent=4))
+        f_load.write(json.dumps({"values": [f"{packParams['namespace']}:reload"]}, indent=4))
+        f_main.write(json.dumps({"values": [f"{packParams['namespace']}:main"]}, indent=4))

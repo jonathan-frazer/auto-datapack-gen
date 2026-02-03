@@ -4,12 +4,12 @@ from utils import get_action_slot_entries
 from .ability_utils import ability_namespace, designated_item_json, advancement_json, write_file
 
 
-def createAdvancementFiles(datapackParams):
+def createAdvancementFiles(packParams):
     advancement_root = os.path.join(
-        os.getenv("DATAPACKS_PATH"),
-        datapackParams["pack_name"],
+        os.getenv("DATAPACK_PATH"),
+        packParams["pack_name"],
         "data",
-        datapackParams["namespace"],
+        packParams["namespace"],
         "advancement",
         charNamespace,
     )
@@ -27,7 +27,7 @@ def createAdvancementFiles(datapackParams):
         if isinstance(ability, list):
             designated = designated_item_json(include_model=False)
             path = f"{charNamespace}/slot_{i}/fpress/0_check"
-            write_file(os.path.join(slot_folder, "fpress.json"), advancement_json(datapackParams, path, designated))
+            write_file(os.path.join(slot_folder, "fpress.json"), advancement_json(packParams, path, designated))
             continue
 
         model_name = ability_namespace(ability, f"Ability{i}")
@@ -48,23 +48,23 @@ def createAdvancementFiles(datapackParams):
 
             if "f-press" in slot_names and "shift-f-press" not in slot_names:
                 path = f"{charNamespace}/slot_{i}/fpress/0_check"
-                write_file(os.path.join(ability_folder, "fpress.json"), advancement_json(datapackParams, path, designated))
+                write_file(os.path.join(ability_folder, "fpress.json"), advancement_json(packParams, path, designated))
 
             if "f-press" in slot_names and "shift-f-press" in slot_names:
                 path = f"{charNamespace}/slot_{i}/fpress/0_check"
                 write_file(
                     os.path.join(ability_folder, "fpress.json"),
-                    advancement_json(datapackParams, path, designated, sneaking=False),
+                    advancement_json(packParams, path, designated, sneaking=False),
                 )
                 path = f"{charNamespace}/slot_{i}/shift_fpress/0_check"
                 write_file(
                     os.path.join(ability_folder, "shift_fpress.json"),
-                    advancement_json(datapackParams, path, designated, sneaking=True),
+                    advancement_json(packParams, path, designated, sneaking=True),
                 )
 
             if "shift-f-press" in slot_names and "f-press" not in slot_names:
                 path = f"{charNamespace}/slot_{i}/shift_fpress/0_check"
                 write_file(
                     os.path.join(ability_folder, "shift_fpress.json"),
-                    advancement_json(datapackParams, path, designated, sneaking=True),
+                    advancement_json(packParams, path, designated, sneaking=True),
                 )

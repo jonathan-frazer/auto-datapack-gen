@@ -1,17 +1,17 @@
 import os
 import json
 import math
-from packversion import MinecraftVersion
+from packversion import DatapackMinecraftVersion
 
 
-def writePackMeta(datapackParams):
-    datapack_file_path = os.path.join(os.getenv("DATAPACKS_PATH"), datapackParams["pack_name"], "pack.mcmeta")
+def writePackMeta(packParams):
+    datapack_file_path = os.path.join(os.getenv("DATAPACK_PATH"), packParams["pack_name"], "pack.mcmeta")
     os.makedirs(os.path.dirname(datapack_file_path), exist_ok=True)
 
-    pack_format = MinecraftVersion(datapackParams["minecraft_version"]).pack_format()
+    pack_format = DatapackMinecraftVersion(packParams["minecraft_version"]).pack_format()
     payload = {
         "pack": {
-            "description": datapackParams["description"],
+            "description": packParams["description"],
             "pack_format": int(round(pack_format)),
             "min_format": int(math.floor(pack_format)),
             "max_format": int(math.ceil(pack_format)),

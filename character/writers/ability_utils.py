@@ -9,7 +9,7 @@ def ability_name(ability, fallback):
     return str(ability)
 
 
-def ability_desc(ability, fallback="Lorem ipsum dolor sit amet"):
+def ability_desc(ability, fallback=""):
     if isinstance(ability, dict):
         return ability.get("description", fallback)
     return fallback
@@ -58,7 +58,7 @@ def item_command(slot_index, name, desc, model_name, name_color, lore_color, gli
     )
 
 
-def advancement_json(datapackParams, path, designated_item, sneaking=None):
+def advancement_json(packParams, path, designated_item, sneaking=None):
     flags = ""
     if sneaking is True:
         flags = '\t\t\t\t"flags": {"is_sneaking": true},\n'
@@ -84,7 +84,7 @@ def advancement_json(datapackParams, path, designated_item, sneaking=None):
         "\t\t}\n"
         "\t},\n"
         '\t"rewards": {\n'
-        f'\t\t"function": "{datapackParams["namespace"]}:{path}"\n'
+        f'\t\t"function": "{packParams["namespace"]}:{path}"\n'
         "\t}\n"
         "}"
     )

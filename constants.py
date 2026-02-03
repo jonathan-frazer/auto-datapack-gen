@@ -1,9 +1,18 @@
-import json
 from utils import nameShortener, colorCodeHexGen
+from parameter_assertions import load_character_parameters, load_texture_parameters
 
-characterParams = json.loads(open('parameters/character_parameters.json').read())
+characterParams = load_character_parameters("parameters/character_parameters.json")
+textureParams = load_texture_parameters("parameters/texture_parameters.json")
 charNamespace = nameShortener(characterParams.get('name'),type='namespace')
 charNameTag = nameShortener(characterParams.get('name'),type='nametag')
+
+TEXTURE_WIDTH = textureParams["texture"]["width"]
+TEXTURE_HEIGHT = textureParams["texture"]["height"]
+TEXTURE_SCALE = textureParams["texture"]["scale"]
+
+PACKPNG_WIDTH = textureParams["pack"]["width"]
+PACKPNG_HEIGHT = textureParams["pack"]["height"]
+PACKPNG_SCALE = textureParams["pack"]["scale"]
 
 ITEM_NAME_COMPONENT = (
             f'{{'
@@ -32,3 +41,5 @@ HIDDEN_COMPONENT = '{hidden_components:["dyed_color","attribute_modifiers","unbr
 
 RCLICK_SCOREBOARD_NAME = nameShortener(characterParams['name'],max_length=8,type='namespace')+"RClick"
 QPRESS_SCOREBOARD_NAME = nameShortener(characterParams['name'],max_length=8,type='namespace')+"QPress"
+
+

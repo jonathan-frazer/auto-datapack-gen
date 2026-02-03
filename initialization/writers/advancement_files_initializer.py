@@ -1,12 +1,12 @@
 import os
 
 
-def initializeAdvancementFiles(datapackParams):
+def initializeAdvancementFiles(packParams):
     advancement_file_path = os.path.join(
-        os.getenv("DATAPACKS_PATH"),
-        datapackParams["pack_name"],
+        os.getenv("DATAPACK_PATH"),
+        packParams["pack_name"],
         "data",
-        datapackParams["namespace"],
+        packParams["namespace"],
         "advancement",
         "0.json",
     )

@@ -2,12 +2,12 @@ import os
 from constants import charNamespace, ITEM_PROFILE_COMPONENT
 
 
-def createItemDetectPredicate(datapackParams):
+def createItemDetectPredicate(packParams):
     char_pred_path = os.path.join(
-        os.getenv("DATAPACKS_PATH"),
-        datapackParams["pack_name"],
+        os.getenv("DATAPACK_PATH"),
+        packParams["pack_name"],
         "data",
-        datapackParams["namespace"],
+        packParams["namespace"],
         "predicate",
         charNamespace,
         "wearing_head.json",

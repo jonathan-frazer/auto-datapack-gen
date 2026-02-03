@@ -2,7 +2,7 @@ from constants import characterParams, ITEM_CUSTOM_DATA_COMPONENT, HIDDEN_COMPON
 from utils import colorCodeIntGen, colorCodeHexGen
 
 
-def effect_file_content(datapackParams):
+def effect_file_content(packParams):
     def generate_armor_line():
         slot_types = ["chest", "legs", "feet"]
         armor_pieces = ["chestplate", "leggings", "boots"]

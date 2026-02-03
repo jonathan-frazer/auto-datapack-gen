@@ -1,0 +1,12 @@
+{
+    "texture": {
+        "width": 400,
+        "height": 400,
+        "scale": 4
+    },
+    "pack": {
+        "width": 800,
+        "height": 800,
+        "scale": 6
+    }
+}

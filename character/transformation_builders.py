@@ -2,7 +2,7 @@ from constants import charNamespace, characterParams, charNameTag, ITEM_CUSTOM_D
 from utils import colorCodeHexGen, nameShortener, get_action_slot_entries, ultimate_scoreboard_name
 
 
-def activate_file_content(datapackParams):
+def activate_file_content(packParams):
     def initialize_scoreboards():
         lines = ["#Initialize Scoreboards"]
         abilities = characterParams.get("ability_slots", [])
@@ -48,14 +48,14 @@ def activate_file_content(datapackParams):
         f"tag @s add {charNameTag}",
         "",
         "#Apply Effects",
-        f"function {datapackParams['namespace']}:{charNamespace}/effect",
+        f"function {packParams['namespace']}:{charNamespace}/effect",
         "",
         initialize_scoreboards(),
     ]
     return "\n".join(lines)
 
 
-def deactivate_file_content(datapackParams):
+def deactivate_file_content(packParams):
     def delete_ability_item():
         if not isinstance(characterParams, dict):
             return ""

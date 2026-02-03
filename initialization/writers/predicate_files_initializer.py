@@ -2,12 +2,12 @@ import os
 from ..basic_predicates_builder import get_basic_predicate_content
 
 
-def initializePredicateFiles(datapackParams):
+def initializePredicateFiles(packParams):
     predicate_file_path = os.path.join(
-        os.getenv("DATAPACKS_PATH"),
-        datapackParams["pack_name"],
+        os.getenv("DATAPACK_PATH"),
+        packParams["pack_name"],
         "data",
-        datapackParams["namespace"],
+        packParams["namespace"],
         "predicate",
     )
     os.makedirs(predicate_file_path, exist_ok=True)

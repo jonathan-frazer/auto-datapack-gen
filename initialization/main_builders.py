@@ -2,10 +2,10 @@ from constants import characterParams, charNameTag, charNamespace, ITEM_CUSTOM_D
 from utils import nameShortener, get_action_slot_entries
 
 
-def main_file_content(datapackParams):
+def main_file_content(packParams):
     lines = [
         "# Runs Every Tick",
-        f"execute as @a[tag={charNameTag}] run function {datapackParams['namespace']}:{charNamespace}/tick",
+        f"execute as @a[tag={charNameTag}] run function {packParams['namespace']}:{charNamespace}/tick",
     ]
     return "\n".join(lines)
 
@@ -27,7 +27,7 @@ def yield_crafting_recipe():
             yield f'{{Item:{{id:"{item}",count:{count}}}}}'
 
 
-def main_halfsec_file_content(datapackParams):
+def main_halfsec_file_content(packParams):
     def generate_crafting_string():
         parts = []
         for i, nbt in enumerate(yield_crafting_recipe()):
@@ -35,7 +35,7 @@ def main_halfsec_file_content(datapackParams):
                 parts.append(f"execute at @e[type=item,nbt={nbt}]")
             else:
                 parts.append(f"if entity @n[type=item,distance=..2,nbt={nbt}]")
-        parts.append(f"run function {datapackParams['namespace']}:craft_{charNamespace}")
+        parts.append(f"run function {packParams['namespace']}:craft_{charNamespace}")
         return " ".join(parts)
 
     def decrement_cooldowns():
@@ -73,25 +73,25 @@ def main_halfsec_file_content(datapackParams):
         generate_crafting_string(),
         "",
         "# Activation/Deactivation Check",
-        f"execute as @a[tag=!{charNameTag},predicate={datapackParams['namespace']}:{charNamespace}/wearing_head] at @s run function {datapackParams['namespace']}:{charNamespace}/activate",
-        f"execute as @a[tag={charNameTag},predicate=!{datapackParams['namespace']}:{charNamespace}/wearing_head] at @s run function {datapackParams['namespace']}:{charNamespace}/deactivate",
+        f"execute as @a[tag=!{charNameTag},predicate={packParams['namespace']}:{charNamespace}/wearing_head] at @s run function {packParams['namespace']}:{charNamespace}/activate",
+        f"execute as @a[tag={charNameTag},predicate=!{packParams['namespace']}:{charNamespace}/wearing_head] at @s run function {packParams['namespace']}:{charNamespace}/deactivate",
         "",
         decrement_cooldowns(),
         "",
         "# Effects",
-        f"execute as @a[tag={charNameTag}] run function {datapackParams['namespace']}:{charNamespace}/quick_effect",
+        f"execute as @a[tag={charNameTag}] run function {packParams['namespace']}:{charNamespace}/quick_effect",
         "",
         f"kill @e[type=item,nbt={{Item:{{components:{{\"minecraft:custom_data\":{ITEM_CUSTOM_DATA_COMPONENT}}}}}}}]",
-        f"schedule function {datapackParams['namespace']}:main_halfsec 10t",
+        f"schedule function {packParams['namespace']}:main_halfsec 10t",
     ]
     return "\n".join(lines)
 
 
-def main_sec_file_content(datapackParams):
+def main_sec_file_content(packParams):
     lines = [
         "# Runs Every Second",
-        f"execute as @a[tag={charNameTag}] run function {datapackParams['namespace']}:{charNamespace}/effect",
+        f"execute as @a[tag={charNameTag}] run function {packParams['namespace']}:{charNamespace}/effect",
         "",
-        f"schedule function {datapackParams['namespace']}:main_sec 1s",
+        f"schedule function {packParams['namespace']}:main_sec 1s",
     ]
     return "\n".join(lines)

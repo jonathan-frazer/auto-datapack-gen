@@ -3,12 +3,12 @@ from ..duration_builders import effect_file_content, quickEffect_file_content, t
 from constants import charNamespace
 
 
-def _write_function(datapackParams, filename, content):
+def _write_function(packParams, filename, content):
     file_path = os.path.join(
-        os.getenv("DATAPACKS_PATH"),
-        datapackParams["pack_name"],
+        os.getenv("DATAPACK_PATH"),
+        packParams["pack_name"],
         "data",
-        datapackParams["namespace"],
+        packParams["namespace"],
         "function",
         charNamespace,
         filename,
@@ -18,13 +18,13 @@ def _write_function(datapackParams, filename, content):
         f.write(content)
 
 
-def writeEffectFunction(datapackParams):
-    _write_function(datapackParams, "effect.mcfunction", effect_file_content(datapackParams))
+def writeEffectFunction(packParams):
+    _write_function(packParams, "effect.mcfunction", effect_file_content(packParams))
 
 
-def writeQuickEffectFunction(datapackParams):
-    _write_function(datapackParams, "quick_effect.mcfunction", quickEffect_file_content(datapackParams))
+def writeQuickEffectFunction(packParams):
+    _write_function(packParams, "quick_effect.mcfunction", quickEffect_file_content(packParams))
 
 
-def writeTickFunction(datapackParams):
-    _write_function(datapackParams, "tick.mcfunction", tick_file_content(datapackParams))
+def writeTickFunction(packParams):
+    _write_function(packParams, "tick.mcfunction", tick_file_content(packParams))
