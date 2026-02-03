@@ -182,3 +182,7 @@ def nameShortener( name: str, max_length: int = 16, type: str = "default") -> st
 
     # Final fallback: truncate first word
     return words[0][:max_length]
+
+def ultimate_scoreboard_name(ability_name: str, slot_index: int) -> str:
+    base = nameShortener(ability_name or f"Ability{slot_index}", max_length=10)
+    return f"{base}{slot_index}Ult"

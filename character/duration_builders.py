@@ -1,5 +1,5 @@
 from constants import QPRESS_SCOREBOARD_NAME, RCLICK_SCOREBOARD_NAME, charNamespace, characterParams, ITEM_CUSTOM_DATA_COMPONENT,HIDDEN_COMPONENT,charNameTag
-from utils import colorCodeIntGen, colorCodeHexGen, nameShortener, get_action_slot_entries
+from utils import colorCodeIntGen, colorCodeHexGen, nameShortener, get_action_slot_entries, ultimate_scoreboard_name
 
 def effect_file_content(datapackParams):
 	def generate_armor_line():
@@ -47,27 +47,46 @@ def quickEffect_file_content(datapackParams):
 			if isinstance(ability, list):
 				multiToolLines = []
 				for j,subAbility in enumerate(ability):
+					multiToolLines.append(f"\t\t#{subAbility.get('name',f"SubAbility {j}")}")
 					hasCooldown = subAbility.get('cooldown', 0) or subAbility.get('sneakCooldown',0)
 					condition = f"[scores={{{nameShortener(charNameTag,max_length=8)}{i}Swap={j}}}]"
 					if hasCooldown:
-						itemCommand = f"if score @s {nameShortener(subAbility.get('name',f"SubAbility{j}"),max_length=12)}{i}CD matches 0 run item replace entity @s hotbar.{i} with minecraft:warped_fungus_on_a_stick[custom_data={ITEM_CUSTOM_DATA_COMPONENT},item_name={{\"text\":\"{subAbility if isinstance(subAbility,str) else subAbility.get('name')}\",\"color\":\"{colorCodeHexGen(colorScheme[nameColorIndex])}\"}},lore=[{{\"text\":\"{subAbility.get('description',"Lorem ipsum dolor sit amet")}\",\"color\":\"{colorCodeHexGen(colorScheme[loreColorIndex])}\"}}],custom_model_data={{strings:[\"{nameShortener(subAbility,type='namespace') if isinstance(subAbility,str) else nameShortener(subAbility.get('name',""),type='namespace')}\"]}}] 1"
-						cooldownItemCommand = f"unless score @s {nameShortener(subAbility.get('name',f"SubAbility{j}"),max_length=12)}{i}CD matches 0 run item replace entity @s hotbar.{i} with minecraft:warped_fungus_on_a_stick[enchantment_glint_override=true,custom_data={ITEM_CUSTOM_DATA_COMPONENT},item_name={{\"text\":\"{subAbility if isinstance(subAbility,str) else subAbility.get('name')}\",\"color\":\"{colorCodeHexGen(colorScheme[nameColorIndex])}\"}},lore=[{{\"text\":\"{subAbility.get('description',"Lorem ipsum dolor sit amet")}\",\"color\":\"{colorCodeHexGen(colorScheme[loreColorIndex])}\"}}],custom_model_data={{strings:[\"{nameShortener(subAbility,type='namespace') if isinstance(subAbility,str) else nameShortener(subAbility.get('name',""),type='namespace')}\"]}}] 1"
-						multiToolLines.append(f"\texecute unless data entity @s{condition} Inventory[{{Slot:{i}b}}] {itemCommand}\n\texecute unless data entity @s{condition} Inventory[{{Slot:{i}b}}] {cooldownItemCommand}\n\texecute if data entity @s{condition} Inventory[{{Slot:{i}b}}].components.\"minecraft:custom_data\".{charNameTag} {itemCommand}\n\texecute if data entity @s{condition} Inventory[{{Slot:{i}b}}].components.\"minecraft:custom_data\".{charNameTag} {cooldownItemCommand}")
+						itemCommand = f"if score @s {nameShortener(subAbility.get('name',f"SubAbility{j}"),max_length=12)}{i}CD matches 0 run item replace entity @s hotbar.{i} with minecraft:warped_fungus_on_a_stick[custom_data={ITEM_CUSTOM_DATA_COMPONENT},item_name={{\"text\":\"{subAbility if isinstance(subAbility,str) else subAbility.get('name')}\",\"color\":\"{colorCodeHexGen(colorScheme[nameColorIndex])}\"}},lore=[{{\"text\":\"{subAbility.get('description',"")}\",\"color\":\"{colorCodeHexGen(colorScheme[loreColorIndex])}\"}}],custom_model_data={{strings:[\"{nameShortener(subAbility,type='namespace') if isinstance(subAbility,str) else nameShortener(subAbility.get('name',""),type='namespace')}\"]}}] 1"
+						cooldownItemCommand = f"unless score @s {nameShortener(subAbility.get('name',f"SubAbility{j}"),max_length=12)}{i}CD matches 0 run item replace entity @s hotbar.{i} with minecraft:warped_fungus_on_a_stick[enchantment_glint_override=true,custom_data={ITEM_CUSTOM_DATA_COMPONENT},item_name={{\"text\":\"{subAbility if isinstance(subAbility,str) else subAbility.get('name')}\",\"color\":\"{colorCodeHexGen(colorScheme[nameColorIndex])}\"}},lore=[{{\"text\":\"{subAbility.get('description',"")}\",\"color\":\"{colorCodeHexGen(colorScheme[loreColorIndex])}\"}}],custom_model_data={{strings:[\"{nameShortener(subAbility,type='namespace') if isinstance(subAbility,str) else nameShortener(subAbility.get('name',""),type='namespace')}\"]}}] 1"
+						multiToolLines.append(f"\t\texecute unless data entity @s{condition} Inventory[{{Slot:{i}b}}] {itemCommand}\n\t\texecute unless data entity @s{condition} Inventory[{{Slot:{i}b}}] {cooldownItemCommand}\n\t\texecute if data entity @s{condition} Inventory[{{Slot:{i}b}}].components.\"minecraft:custom_data\".{charNameTag} {itemCommand}\n\t\texecute if data entity @s{condition} Inventory[{{Slot:{i}b}}].components.\"minecraft:custom_data\".{charNameTag} {cooldownItemCommand}")
 
 					else:
-						itemCommand = f"item replace entity @s hotbar.{i} with minecraft:warped_fungus_on_a_stick[custom_data={ITEM_CUSTOM_DATA_COMPONENT},item_name={{\"text\":\"{subAbility if isinstance(subAbility,str) else subAbility.get('name')}\",\"color\":\"{colorCodeHexGen(colorScheme[nameColorIndex])}\"}},lore=[{{\"text\":\"{subAbility.get('description',"Lorem ipsum dolor sit amet")}\",\"color\":\"{colorCodeHexGen(colorScheme[loreColorIndex])}\"}}],custom_model_data={{strings:[\"{nameShortener(subAbility,type='namespace') if isinstance(subAbility,str) else nameShortener(subAbility.get('name',""),type='namespace')}\"]}}] 1"				
-						multiToolLines.append(f"\texecute unless data entity @s{condition} Inventory[{{Slot:{i}b}}] run {itemCommand}\n\texecute if data entity @s{condition} Inventory[{{Slot:{i}b}}].components.\"minecraft:custom_data\".{charNameTag} run {itemCommand}")
+						itemCommand = f"item replace entity @s hotbar.{i} with minecraft:warped_fungus_on_a_stick[custom_data={ITEM_CUSTOM_DATA_COMPONENT},item_name={{\"text\":\"{subAbility if isinstance(subAbility,str) else subAbility.get('name')}\",\"color\":\"{colorCodeHexGen(colorScheme[nameColorIndex])}\"}},lore=[{{\"text\":\"{subAbility.get('description',"")}\",\"color\":\"{colorCodeHexGen(colorScheme[loreColorIndex])}\"}}],custom_model_data={{strings:[\"{nameShortener(subAbility,type='namespace') if isinstance(subAbility,str) else nameShortener(subAbility.get('name',""),type='namespace')}\"]}}] 1"				
+						multiToolLines.append(f"\t\texecute unless data entity @s{condition} Inventory[{{Slot:{i}b}}] run {itemCommand}\n\t\texecute if data entity @s{condition} Inventory[{{Slot:{i}b}}].components.\"minecraft:custom_data\".{charNameTag} run {itemCommand}")
 						
 				yield f"\t#Slot {i}\n{"\n".join(multiToolLines)}" 
 				continue
 
-			if 'cooldown' in ability:
-				itemCommand = f"if score @s {nameShortener(ability.get('name',f"Ability{i}"),max_length=12)}{i}CD matches 0 run item replace entity @s hotbar.{i} with minecraft:warped_fungus_on_a_stick[custom_data={ITEM_CUSTOM_DATA_COMPONENT},item_name={{\"text\":\"{ability if isinstance(ability,str) else ability.get('name')}\",\"color\":\"{colorCodeHexGen(colorScheme[nameColorIndex])}\"}},lore=[{{\"text\":\"{ability.get('description',"Lorem ipsum dolor sit amet")}\",\"color\":\"{colorCodeHexGen(colorScheme[loreColorIndex])}\"}}],custom_model_data={{strings:[\"{nameShortener(ability,type='namespace') if isinstance(ability,str) else nameShortener(ability.get('name',""),type='namespace')}\"]}}] 1"
-				cooldownItemCommand = f"unless score @s {nameShortener(ability.get('name',f"Ability{i}"),max_length=12)}{i}CD matches 0 run item replace entity @s hotbar.{i} with minecraft:warped_fungus_on_a_stick[enchantment_glint_override=true,custom_data={ITEM_CUSTOM_DATA_COMPONENT},item_name={{\"text\":\"{ability if isinstance(ability,str) else ability.get('name')}\",\"color\":\"{colorCodeHexGen(colorScheme[nameColorIndex])}\"}},lore=[{{\"text\":\"{ability.get('description',"Lorem ipsum dolor sit amet")}\",\"color\":\"{colorCodeHexGen(colorScheme[loreColorIndex])}\"}}],custom_model_data={{strings:[\"{nameShortener(ability,type='namespace') if isinstance(ability,str) else nameShortener(ability.get('name',""),type='namespace')}\"]}}] 1"
+			if isinstance(ability, dict) and ability.get('ultimate'):
+				ult_score = ultimate_scoreboard_name(ability.get('name', f"Ability{i}"), i)
+				baseItemCommand = f"item replace entity @s hotbar.{i} with minecraft:warped_fungus_on_a_stick[custom_data={ITEM_CUSTOM_DATA_COMPONENT},item_name={{\"text\":\"{ability if isinstance(ability,str) else ability.get('name')}\",\"color\":\"{colorCodeHexGen(colorScheme[nameColorIndex])}\"}},lore=[{{\"text\":\"{ability.get('description',"")}\",\"color\":\"{colorCodeHexGen(colorScheme[loreColorIndex])}\"}}],custom_model_data={{strings:[\"{nameShortener(ability,type='namespace') if isinstance(ability,str) else nameShortener(ability.get('name',""),type='namespace')}\"]}}] 1"
+				glintItemCommand = f"item replace entity @s hotbar.{i} with minecraft:warped_fungus_on_a_stick[enchantment_glint_override=true,custom_data={ITEM_CUSTOM_DATA_COMPONENT},item_name={{\"text\":\"{ability if isinstance(ability,str) else ability.get('name')}\",\"color\":\"{colorCodeHexGen(colorScheme[nameColorIndex])}\"}},lore=[{{\"text\":\"{ability.get('description',"")}\",\"color\":\"{colorCodeHexGen(colorScheme[loreColorIndex])}\"}}],custom_model_data={{strings:[\"{nameShortener(ability,type='namespace') if isinstance(ability,str) else nameShortener(ability.get('name',""),type='namespace')}\"]}}] 1"
+				yield (
+					f"\t#Slot {i}\n"
+					f"\texecute if score @s {ult_score} matches ..99 run scoreboard players add @s {ult_score} 1\n"
+					f"\texecute if score @s {ult_score} matches 100.. run scoreboard players set @s {ult_score} 100\n"
+					f"\texecute if score @s {ult_score} matches 100.. unless data entity @s Inventory[{{Slot:{i}b}}] run {baseItemCommand}\n"
+					f"\texecute if score @s {ult_score} matches ..99 unless data entity @s Inventory[{{Slot:{i}b}}] run {glintItemCommand}\n"
+					f"\texecute if score @s {ult_score} matches 100.. if data entity @s Inventory[{{Slot:{i}b}}].components.\"minecraft:custom_data\".{charNameTag} run {baseItemCommand}\n"
+					f"\texecute if score @s {ult_score} matches ..99 if data entity @s Inventory[{{Slot:{i}b}}].components.\"minecraft:custom_data\".{charNameTag} run {glintItemCommand}"
+				)
+				continue
+
+			try:
+				hasCooldown = any(('cooldown' in action_slot) for action_slot in ability['action_slots'])
+				if not hasCooldown: raise KeyError
+				itemCommand = f"if score @s {nameShortener(ability.get('name',f"Ability{i}"),max_length=12)}{i}CD matches 0 run item replace entity @s hotbar.{i} with minecraft:warped_fungus_on_a_stick[custom_data={ITEM_CUSTOM_DATA_COMPONENT},item_name={{\"text\":\"{ability if isinstance(ability,str) else ability.get('name')}\",\"color\":\"{colorCodeHexGen(colorScheme[nameColorIndex])}\"}},lore=[{{\"text\":\"{ability.get('description',"")}\",\"color\":\"{colorCodeHexGen(colorScheme[loreColorIndex])}\"}}],custom_model_data={{strings:[\"{nameShortener(ability,type='namespace') if isinstance(ability,str) else nameShortener(ability.get('name',""),type='namespace')}\"]}}] 1"
+				cooldownItemCommand = f"unless score @s {nameShortener(ability.get('name',f"Ability{i}"),max_length=12)}{i}CD matches 0 run item replace entity @s hotbar.{i} with minecraft:warped_fungus_on_a_stick[enchantment_glint_override=true,custom_data={ITEM_CUSTOM_DATA_COMPONENT},item_name={{\"text\":\"{ability if isinstance(ability,str) else ability.get('name')}\",\"color\":\"{colorCodeHexGen(colorScheme[nameColorIndex])}\"}},lore=[{{\"text\":\"{ability.get('description',"")}\",\"color\":\"{colorCodeHexGen(colorScheme[loreColorIndex])}\"}}],custom_model_data={{strings:[\"{nameShortener(ability,type='namespace') if isinstance(ability,str) else nameShortener(ability.get('name',""),type='namespace')}\"]}}] 1"
+				
 				yield f"\t#Slot {i}\n\texecute unless data entity @s Inventory[{{Slot:{i}b}}] {itemCommand}\n\texecute unless data entity @s Inventory[{{Slot:{i}b}}] {cooldownItemCommand}\n\texecute if data entity @s Inventory[{{Slot:{i}b}}].components.\"minecraft:custom_data\".{charNameTag} {itemCommand}\n\texecute if data entity @s Inventory[{{Slot:{i}b}}].components.\"minecraft:custom_data\".{charNameTag} {cooldownItemCommand}"
 				
-			else:
-				itemCommand = f"item replace entity @s hotbar.{i} with minecraft:warped_fungus_on_a_stick[custom_data={ITEM_CUSTOM_DATA_COMPONENT},item_name={{\"text\":\"{ability if isinstance(ability,str) else ability.get('name')}\",\"color\":\"{colorCodeHexGen(colorScheme[nameColorIndex])}\"}},lore=[{{\"text\":\"{ability.get('description',"Lorem ipsum dolor sit amet")}\",\"color\":\"{colorCodeHexGen(colorScheme[loreColorIndex])}\"}}],custom_model_data={{strings:[\"{nameShortener(ability,type='namespace') if isinstance(ability,str) else nameShortener(ability.get('name',""),type='namespace')}\"]}}] 1"
+			except (KeyError,IndexError):
+				itemCommand = f"item replace entity @s hotbar.{i} with minecraft:warped_fungus_on_a_stick[custom_data={ITEM_CUSTOM_DATA_COMPONENT},item_name={{\"text\":\"{ability if isinstance(ability,str) else ability.get('name')}\",\"color\":\"{colorCodeHexGen(colorScheme[nameColorIndex])}\"}},lore=[{{\"text\":\"{ability.get('description',"")}\",\"color\":\"{colorCodeHexGen(colorScheme[loreColorIndex])}\"}}],custom_model_data={{strings:[\"{nameShortener(ability,type='namespace') if isinstance(ability,str) else nameShortener(ability.get('name',""),type='namespace')}\"]}}] 1"
 				yield f"\t#Slot {i}\n\texecute unless data entity @s Inventory[{{Slot:{i}b}}] run {itemCommand}\n\texecute if data entity @s Inventory[{{Slot:{i}b}}].components.\"minecraft:custom_data\".{charNameTag} run {itemCommand}"
 
 	lines = [
@@ -103,10 +122,13 @@ def tick_file_content(datapackParams):
 
 			ability_lines = [f"\t#Slot {i+1}"]
 			if isinstance(ability, dict):
-				action_slot_entries = get_action_slot_entries(ability.get('action_slots',['f-press','q-press','r-click']))
-				slot_names = [e['action'] for e in action_slot_entries]
-				if 'f-press' not in slot_names: slot_names.append('f-press')
-				if 'q-press' not in slot_names: slot_names.append('q-press')
+				if ability.get('ultimate'):
+					slot_names = ["r-click", "q-press"]
+				else:
+					action_slot_entries = get_action_slot_entries(ability.get('action_slots',['f-press','q-press','r-click']))
+					slot_names = [e['action'] for e in action_slot_entries]
+					if 'f-press' not in slot_names: slot_names.append('f-press')
+					if 'q-press' not in slot_names: slot_names.append('q-press')
 				
 				# R-Click / Shift-Click Logic
 				if "r-click" in slot_names:
@@ -147,6 +169,10 @@ def tick_file_content(datapackParams):
 			drop = True
 			break
 		if isinstance(ability,dict):
+			if ability.get('ultimate'):
+				click = True
+				drop = True
+				break
 			action_slot_entries = get_action_slot_entries(ability.get('action_slots', []))
 			for entry in action_slot_entries:
 				slot = entry['action']

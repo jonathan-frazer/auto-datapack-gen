@@ -1,5 +1,5 @@
 from constants import charNamespace, characterParams, charNameTag, ITEM_CUSTOM_DATA_COMPONENT
-from utils import colorCodeHexGen, nameShortener, get_action_slot_entries
+from utils import colorCodeHexGen, nameShortener, get_action_slot_entries, ultimate_scoreboard_name
 
 def activate_file_content(datapackParams):
 	def initializeScoreboards():
@@ -22,6 +22,11 @@ def activate_file_content(datapackParams):
 				continue
 			
 			if isinstance(ability,dict):
+				if ability.get('ultimate'):
+					lines.append("\t#Ultimate")
+					lines.append(f"\texecute unless score @s {ultimate_scoreboard_name(ability.get('name',f'Ability{i}'), i)} matches 1.. run scoreboard players set @s {ultimate_scoreboard_name(ability.get('name',f'Ability{i}'), i)} 0")
+					lines.append("")
+					continue
 				action_slot_entries = get_action_slot_entries(ability.get('action_slots', []))
 				has_cooldown = any(e.get('cooldown', 0) > 0 for e in action_slot_entries)
 				if has_cooldown:
@@ -86,6 +91,11 @@ def deactivate_file_content(datapackParams):
 				continue
 			
 			if isinstance(ability,dict):
+				if ability.get('ultimate'):
+					lines.append("\t#Ultimate")
+					lines.append(f"\tscoreboard players reset @s {ultimate_scoreboard_name(ability.get('name',f'Ability{i}'), i)}")
+					lines.append("")
+					continue
 				action_slot_entries = get_action_slot_entries(ability.get('action_slots', []))
 				has_cooldown = any(e.get('cooldown', 0) > 0 for e in action_slot_entries)
 				if has_cooldown:

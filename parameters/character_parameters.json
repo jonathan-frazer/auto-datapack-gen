@@ -76,7 +76,12 @@
                 "sneakCooldown": 2.0,
                 "cooldown": 0.5
             }
-        ]
+        ],
+        {
+            "name": "Ultimate Infernal Carnage",
+            "description": "The Fire in me burns eternal",
+            "ultimate": true
+        }
     ],
     "crafting_recipe": {
         "minecraft:blaze_rod": 32,

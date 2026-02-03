@@ -1,5 +1,5 @@
 from constants import QPRESS_SCOREBOARD_NAME, RCLICK_SCOREBOARD_NAME, characterParams, charNameTag
-from utils import colorCodeHexGen, nameShortener, get_action_slot_entries
+from utils import colorCodeHexGen, nameShortener, get_action_slot_entries, ultimate_scoreboard_name
 from collections import deque
 
 def reload_file_content(datapackParams):
@@ -22,6 +22,10 @@ def reload_file_content(datapackParams):
 
 		for ability in abilities:
 			if isinstance(ability, dict):
+				if ability.get('ultimate'):
+					click = True
+					drop = True
+					break
 				action_slot_entries = get_action_slot_entries(ability.get('action_slots') or [])
 				for entry in action_slot_entries:
 					action = entry.get('action', '')
@@ -55,6 +59,11 @@ def reload_file_content(datapackParams):
 				continue
 			
 			if isinstance(ability, dict):
+				if ability.get('ultimate'):
+					lines.append("\t#Ultimate")
+					lines.append(f"\tscoreboard objectives add {ultimate_scoreboard_name(ability.get('name',f'Ability{i}'), i)} dummy")
+					lines.append("")
+					continue
 				action_slot_entries = get_action_slot_entries(ability.get('action_slots') or [])
 				has_cooldown = any((e.get('cooldown') or 0) > 0 for e in action_slot_entries)
 				if has_cooldown:
