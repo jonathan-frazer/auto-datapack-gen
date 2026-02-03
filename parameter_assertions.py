@@ -63,6 +63,15 @@ def validate_character_parameters(params):
         assert isinstance(ability_slots, list), "character_parameters.ability_slots must be a list"
         assert len(ability_slots) <= 9, "character_parameters.ability_slots can have up to 9 abilities"
 
+        allowed_action_slots = {
+            "r-click",
+            "shift-click",
+            "q-press",
+            "shift-q-press",
+            "f-press",
+            "shift-f-press",
+        }
+
         for ability in ability_slots:
             if isinstance(ability, list):
                 for sub_ability in ability:
@@ -78,6 +87,24 @@ def validate_character_parameters(params):
                     assert isinstance(
                         ability["action_slots"], list
                     ), "ability.action_slots must be a list when provided"
+                    for entry in ability["action_slots"]:
+                        if isinstance(entry, dict):
+                            action_value = entry.get("action")
+                            assert isinstance(
+                                action_value, str
+                            ), "ability.action_slots action must be a string"
+                            assert action_value in allowed_action_slots, (
+                                "ability.action_slots action value is invalid. "
+                                "Valid values: "
+                                "r-click, shift-click, q-press, shift-q-press, f-press, shift-f-press"
+                            )
+                        else:
+                            action_value = str(entry)
+                            assert action_value in allowed_action_slots, (
+                                "ability.action_slots value is invalid. "
+                                "Valid values: "
+                                "r-click, shift-click, q-press, shift-q-press, f-press, shift-f-press"
+                            )
             else:
                 assert False, "ability must be a dict or list of sub-abilities"
 
