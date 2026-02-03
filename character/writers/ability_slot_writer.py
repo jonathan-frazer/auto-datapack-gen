@@ -234,7 +234,8 @@ def createAbilityFiles(datapackParams):
 							#Sneak RClick
 							if sneakCooldown > 0:
 								lines = [f"say {i}.{j}.{subAbility if isinstance(ability,str) else subAbility.get('name',"SubAbility")}:shift-click",
-								f"scoreboard players set @s {nameShortener(subAbility.get('name',f"SubAbility{j}"),max_length=12)}{i}CD {int(sneakCooldown*2)}"]
+								f"scoreboard players set @s {nameShortener(subAbility.get('name',f"SubAbility{j}"),max_length=12)}{i}CD {int(sneakCooldown*2)}",
+								f"item replace entity @s hotbar.{i} with minecraft:warped_fungus_on_a_stick[enchantment_glint_override=true,custom_data={ITEM_CUSTOM_DATA_COMPONENT},item_name={{\"text\":\"{subAbility if isinstance(subAbility,str) else subAbility.get('name')}\",\"color\":\"{colorCodeHexGen(colorScheme[nameColorIndex])}\"}},lore=[{{\"text\":\"{subAbility.get('description',"Lorem ipsum dolor sit amet")}\",\"color\":\"{colorCodeHexGen(colorScheme[loreColorIndex])}\"}}],custom_model_data={{strings:[\"{nameShortener(subAbility,type='namespace') if isinstance(subAbility,str) else nameShortener(subAbility.get('name',""),type='namespace')}\"]}}] 1" if sneakCooldown > 0 else ""]
 								check_lines = [
 											"#Perform Arbitrary Cooldown Check here",
 											f"{f"execute if score @s {nameShortener(subAbility.get('name',f"SubAbility{j}"),max_length=12)}{i}CD matches 0 run " if sneakCooldown > 0 else ""}function {datapackParams['namespace']}:{charNamespace}/slot_{i}/{j+1}_{nameShortener(subAbility.get('name',"SubAbility"),max_length=16,type="namespace")}/shiftclick/0_init"
@@ -253,7 +254,8 @@ def createAbilityFiles(datapackParams):
 							#Normal RClick
 							lines = [
 								f"say {i}.{j}.{subAbility if isinstance(ability,str) else subAbility.get('name',"SubAbility")}:right-click",
-								f"{f"scoreboard players set @s {nameShortener(subAbility.get('name',f"SubAbility{j}"),max_length=12)}{i}CD {int(cooldown*2)}" if cooldown > 0 else ""}"
+								f"{f"scoreboard players set @s {nameShortener(subAbility.get('name',f"SubAbility{j}"),max_length=12)}{i}CD {int(cooldown*2)}" if cooldown > 0 else ""}",
+								f"item replace entity @s hotbar.{i} with minecraft:warped_fungus_on_a_stick[enchantment_glint_override=true,custom_data={ITEM_CUSTOM_DATA_COMPONENT},item_name={{\"text\":\"{subAbility if isinstance(subAbility,str) else subAbility.get('name')}\",\"color\":\"{colorCodeHexGen(colorScheme[nameColorIndex])}\"}},lore=[{{\"text\":\"{subAbility.get('description',"Lorem ipsum dolor sit amet")}\",\"color\":\"{colorCodeHexGen(colorScheme[loreColorIndex])}\"}}],custom_model_data={{strings:[\"{nameShortener(subAbility,type='namespace') if isinstance(subAbility,str) else nameShortener(subAbility.get('name',""),type='namespace')}\"]}}] 1" if cooldown > 0 else ""
 							]
 							check_lines = [
 											"#Perform Arbitrary Cooldown Check here",
@@ -286,7 +288,8 @@ def createAbilityFiles(datapackParams):
 
 								lines = [
 									f"say {i}.{ability if isinstance(ability,str) else ability.get('name')}:{slot}",
-									f"{f"scoreboard players set @s {nameShortener(ability.get('name',f"Ability{i}"),max_length=12)}{i}CD {int(current_cooldown*2)}" if current_cooldown > 0 else ""}"
+									f"{f"scoreboard players set @s {nameShortener(ability.get('name',f"Ability{i}"),max_length=12)}{i}CD {int(current_cooldown*2)}" if current_cooldown > 0 else ""}",
+									f"item replace entity @s hotbar.{i} with minecraft:warped_fungus_on_a_stick[enchantment_glint_override=true,custom_data={ITEM_CUSTOM_DATA_COMPONENT},item_name={{\"text\":\"{ability if isinstance(ability,str) else ability.get('name')}\",\"color\":\"{colorCodeHexGen(colorScheme[nameColorIndex])}\"}},lore=[{{\"text\":\"{ability.get('description',"Lorem ipsum dolor sit amet")}\",\"color\":\"{colorCodeHexGen(colorScheme[loreColorIndex])}\"}}],custom_model_data={{strings:[\"{nameShortener(ability,type='namespace') if isinstance(ability,str) else nameShortener(ability.get('name',""),type='namespace')}\"]}}] 1" if current_cooldown > 0 else ""
 				 ] if not slot.endswith("NULL") else []
 								
 								slot = slot.replace('NULL', '')
