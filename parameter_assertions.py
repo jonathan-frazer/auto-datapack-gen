@@ -1,6 +1,8 @@
 import json
 import os
 
+from packversion import MinecraftVersion
+
 
 DEFAULT_TEXTURE_PARAMETERS = {
     "texture": {
@@ -29,6 +31,19 @@ def validate_datapack_parameters(params):
     required = ["pack_name", "namespace", "description", "minecraft_version", "load_msg"]
     for key in required:
         _assert_non_empty_str(params.get(key), f"datapack_parameters.{key}")
+
+    version_value = params.get("minecraft_version")
+    try:
+        parsed_version = MinecraftVersion(version_value)
+    except Exception as exc:
+        raise AssertionError(
+            "datapack_parameters.minecraft_version must be a valid Minecraft version string"
+        ) from exc
+
+    minimum_version = MinecraftVersion("1.21.4")
+    assert (
+        parsed_version >= minimum_version
+    ), "datapack_parameters.minecraft_version must be 1.21.4 or newer"
     return params
 
 

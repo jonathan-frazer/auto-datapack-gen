@@ -24,6 +24,11 @@ Required fields (all must be non-empty strings):
 - `minecraft_version`
 - `load_msg`
 
+Minecraft version rules:
+
+- Must be a valid Minecraft version string.
+- Must be `1.21.4` or newer.
+
 Example:
 
 ```json
@@ -64,7 +69,7 @@ Optional fields and rules:
   - If an ability has `"ultimate": true`, it must NOT include `cooldown`, `sneakCooldown`, or `action_slots`.
   - If `action_slots` is present, it must be a list.
   - Each `action_slots` entry must be one of:
-    - `"r-click"`, `"shift-click"`, `"q-press"`, `"shift-q-press"`, `"f-press"`, `"shift-f-press"`.
+    - `"r-click"`, `"shift-r-click"`, `"q-press"`, `"shift-q-press"`, `"f-press"`, `"shift-f-press"`.
   - If an `action_slots` entry is an object, it must include an `action` string with one of the values above.
 
 `crafting_recipe` rules:
