@@ -2,25 +2,25 @@ import os
 from ..transformation_builders import activate_file_content, deactivate_file_content
 from constants import charNamespace
 
-def writeActivationFunction(datapackParams):
-    activation_file_path = os.path.join(
-        os.getenv('DATAPACKS_PATH'), datapackParams['pack_name'],
-        'data', datapackParams['namespace'], 'function', charNamespace,
-        'activate.mcfunction'
-    )
-    os.makedirs(os.path.dirname(activation_file_path), exist_ok=True)
 
-    with open(activation_file_path, 'w') as f:
-        f.write(activate_file_content(datapackParams))
+def _write_function(datapackParams, filename, content):
+    file_path = os.path.join(
+        os.getenv("DATAPACKS_PATH"),
+        datapackParams["pack_name"],
+        "data",
+        datapackParams["namespace"],
+        "function",
+        charNamespace,
+        filename,
+    )
+    os.makedirs(os.path.dirname(file_path), exist_ok=True)
+    with open(file_path, "w") as f:
+        f.write(content)
+
+
+def writeActivationFunction(datapackParams):
+    _write_function(datapackParams, "activate.mcfunction", activate_file_content(datapackParams))
+
 
 def writeDeactivationFunction(datapackParams):
-    deactivation_file_path = os.path.join(
-        os.getenv('DATAPACKS_PATH'), datapackParams['pack_name'],
-        'data', datapackParams['namespace'], 'function', charNamespace,
-        'deactivate.mcfunction'
-    )
-
-    os.makedirs(os.path.dirname(deactivation_file_path), exist_ok=True)
-
-    with open(deactivation_file_path, 'w') as f:
-        f.write(deactivate_file_content(datapackParams))
+    _write_function(datapackParams, "deactivate.mcfunction", deactivate_file_content(datapackParams))

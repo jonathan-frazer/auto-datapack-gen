@@ -1,99 +1,94 @@
 from constants import QPRESS_SCOREBOARD_NAME, RCLICK_SCOREBOARD_NAME, characterParams, charNameTag
 from utils import colorCodeHexGen, nameShortener, get_action_slot_entries, ultimate_scoreboard_name
-from collections import deque
+
 
 def reload_file_content(datapackParams):
-	def reload_string_gen():
-		message = datapackParams.get('load_msg', 'Datapack Loaded!')
-		colorScheme = characterParams.get('color_scheme', ['white'])
+    def format_load_message():
+        message = datapackParams.get("load_msg", "Datapack Loaded!")
+        color_scheme = characterParams.get("color_scheme", ["white"])
+        words = message.split()
+        formatted = []
+        for i, word in enumerate(words):
+            color = color_scheme[i % len(color_scheme)]
+            formatted.append(f'{{"text":"{word} ","color":"{colorCodeHexGen(color)}"}}')
+        return f"tellraw @a [{','.join(formatted)}]"
 
-		words = message.split()
-		formatted_words = []
-		for i,word in enumerate(words):
-			color = colorScheme[i % len(colorScheme)]
-			formatted_words.append(f'{{"text":"{word} ","color":"{colorCodeHexGen(color)}"}}')
+    def detect_click_drop(abilities):
+        click = False
+        drop = False
+        for ability in abilities:
+            if isinstance(ability, dict) and ability.get("ultimate"):
+                return True, True
+            if isinstance(ability, list):
+                return True, True
+            if isinstance(ability, dict):
+                entries = get_action_slot_entries(ability.get("action_slots") or [])
+                for entry in entries:
+                    action = entry.get("action", "")
+                    if not action:
+                        continue
+                    if action in ["r-click", "shift-click"]:
+                        click = True
+                    if action in ["q-press", "shift-q-press"]:
+                        drop = True
+                    if click and drop:
+                        return True, True
+        return click, drop
 
-		return f'tellraw @a [{",".join(formatted_words)}]'
+    def ability_scoreboards(ability, slot_index):
+        lines = [f"#Slot {slot_index + 1}"]
+        if isinstance(ability, list):
+            lines.append(f"\t#Swap Cycle\n\tscoreboard objectives add {nameShortener(charNameTag, max_length=8)}{slot_index}Swap dummy")
+            found = False
+            for j, sub_ability in enumerate(ability):
+                if isinstance(sub_ability, dict) and ("cooldown" in sub_ability or "sneakCooldown" in sub_ability):
+                    if not found:
+                        lines.append("\t#Cooldowns")
+                        found = True
+                    lines.append(f"\tscoreboard objectives add {nameShortener(sub_ability.get('name', f'SubAbility{j}'), max_length=12)}{slot_index}CD dummy")
+            return lines
 
-	def load_scores():
-		abilities = characterParams.get('ability_slots',[])
-		click = False
-		drop = False
+        if isinstance(ability, dict) and ability.get("ultimate"):
+            lines.append("\t#Ultimate")
+            lines.append(f"\tscoreboard objectives add {ultimate_scoreboard_name(ability.get('name', f'Ability{slot_index}'), slot_index)} dummy")
+            lines.append("")
+            return lines
 
-		for ability in abilities:
-			if isinstance(ability, dict):
-				if ability.get('ultimate'):
-					click = True
-					drop = True
-					break
-				action_slot_entries = get_action_slot_entries(ability.get('action_slots') or [])
-				for entry in action_slot_entries:
-					action = entry.get('action', '')
-					if not action:
-						continue
-					if action in ["r-click", "shift-click"]:
-						click = True
-					if action in ['q-press', 'shift-q-press']:
-						drop = True
-					if click and drop:
-						break
+        if isinstance(ability, dict):
+            entries = get_action_slot_entries(ability.get("action_slots") or [])
+            has_cd = any((e.get("cooldown") or 0) > 0 for e in entries)
+            if has_cd:
+                lines.append("\t#Cooldowns")
+                lines.append(f"\tscoreboard objectives add {nameShortener(ability.get('name', f'Ability{slot_index}'), max_length=12)}{slot_index}CD dummy")
 
-			if click and drop:
-				break
+        lines.append("\t#User Defined Scoreboards")
+        lines.append("")
+        return lines
 
-		lines = [] 
-		abilities = characterParams.get('ability_slots',[])
-		for i,ability in enumerate(abilities):
-			lines.append(f"#Slot {i+1}")
-			if isinstance(ability,list):
-				click = True
-				drop = True
-				lines.append(f"\t#Swap Cycle\n\tscoreboard objectives add {nameShortener(charNameTag,max_length=8)}{i}Swap dummy")
-				found = False
-				for j,subAbility in enumerate(ability):
-					if isinstance(subAbility,dict) and ('cooldown' in subAbility or 'sneakCooldown' in subAbility):
-						if not found:
-							lines.append("\t#Cooldowns")
-							found = True
-						lines.append(f"\tscoreboard objectives add {nameShortener(subAbility.get('name',f"SubAbility{j}"),max_length=12)}{i}CD dummy")
-				continue
-			
-			if isinstance(ability, dict):
-				if ability.get('ultimate'):
-					lines.append("\t#Ultimate")
-					lines.append(f"\tscoreboard objectives add {ultimate_scoreboard_name(ability.get('name',f'Ability{i}'), i)} dummy")
-					lines.append("")
-					continue
-				action_slot_entries = get_action_slot_entries(ability.get('action_slots') or [])
-				has_cooldown = any((e.get('cooldown') or 0) > 0 for e in action_slot_entries)
-				if has_cooldown:
-					lines.append("\t#Cooldowns")
-					lines.append(f"\tscoreboard objectives add {nameShortener(ability.get('name',f"Ability{i}"),max_length=12)}{i}CD dummy")
-			
-			lines.append("\t#User Defined Scoreboards")
-			lines.append("")
-		
-		basicLines = [
-			f"scoreboard objectives add {RCLICK_SCOREBOARD_NAME} used:warped_fungus_on_a_stick" if click else "",
-			f"scoreboard objectives add {QPRESS_SCOREBOARD_NAME} dropped:warped_fungus_on_a_stick" if drop else "",
-			f"scoreboard objectives add SelectedSlot dummy"
-		]
-		lines.append("")
-		lines.extend(basicLines)
+    abilities = characterParams.get("ability_slots", [])
+    click, drop = detect_click_drop(abilities)
 
-		return "\n".join(lines)
+    scoreboard_lines = []
+    for i, ability in enumerate(abilities):
+        scoreboard_lines.extend(ability_scoreboards(ability, i))
 
+    scoreboard_lines.append("")
+    if click:
+        scoreboard_lines.append(f"scoreboard objectives add {RCLICK_SCOREBOARD_NAME} used:warped_fungus_on_a_stick")
+    if drop:
+        scoreboard_lines.append(f"scoreboard objectives add {QPRESS_SCOREBOARD_NAME} dropped:warped_fungus_on_a_stick")
+    scoreboard_lines.append("scoreboard objectives add SelectedSlot dummy")
 
-	lines = [
-		"# Runs Once per World Load",
-		reload_string_gen(),
-		"",
-		"# Scoreboards",
-		load_scores()
-	]
+    lines = [
+        "# Runs Once per World Load",
+        format_load_message(),
+        "",
+        "# Scoreboards",
+        "\n".join(scoreboard_lines),
+        "",
+        "#Schedule Functions",
+        f"schedule function {datapackParams['namespace']}:main_sec 1t",
+        f"schedule function {datapackParams['namespace']}:main_halfsec 1t",
+    ]
 
-	lines.append(f"\n#Schedule Functions")
-	lines.append(f"schedule function {datapackParams['namespace']}:main_sec 1t")
-	lines.append(f"schedule function {datapackParams['namespace']}:main_halfsec 1t")
-
-	return "\n".join(lines)
+    return "\n".join(lines)
